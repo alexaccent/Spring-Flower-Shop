@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<% String uri = (String) request.getRequestURI().toString(); %>
 
 <html>
 <head>
@@ -12,6 +13,12 @@
       <div class="container d-flex flex-column flex-md-row justify-content-between">
         <a class="py-3 d-none d-md-inline-block" href="/registration">Регистрация</a>
         <a class="py-3 d-none d-md-inline-block logo" href="/">Spring Flower Shop</a>
-        <a class="py-2 d-none d-md-inline-block" href="#"><small>My URL Location : <br> <%= request.getRequestURI().toString() %></small></a>
+        <% if (uri.equals("/main.jsp")) { %>
+            <form class="mt-2 mb-0"  method="POST" action="/main">
+                <button type="submit" name="logout" value="ok" class="btn btn-danger">Выйти</button>
+            </form>
+        <% } else { %>
+            <span class="py-3 d-none d-md-inline-block"></span>
+        <% } %>
       </div>
     </nav>

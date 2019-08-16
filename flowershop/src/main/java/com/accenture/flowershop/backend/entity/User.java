@@ -16,7 +16,7 @@ public class User {
     private String phone;
     private String address;
     private String balance;
-    private double discount;
+    private int discount;
     private static int count = 0;
 
     public User(String login, String phone, String address, String password) {
@@ -25,7 +25,7 @@ public class User {
         this.address = address;
         this.password = password;
         setBalance("0.0");
-        setDiscount(0.0);
+        setDiscount(0);
         setId(++count);
     }
 
@@ -45,11 +45,11 @@ public class User {
         this.balance = balance;
     }
 
-    public double getDiscount() {
+    public int getDiscount() {
         return discount;
     }
 
-    public void setDiscount(double discount) {
+    public void setDiscount(int discount) {
         this.discount = discount;
     }
 

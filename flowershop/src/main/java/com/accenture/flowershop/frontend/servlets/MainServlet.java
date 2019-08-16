@@ -46,6 +46,21 @@ public class MainServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String logout = req.getParameter("logout");
+        System.out.println(logout);
 
+        if (logout != null && !logout.isEmpty() ) {
+            System.out.println("test1");
+            HttpSession session = req.getSession(false);
+
+            if (session != null) {
+                session.removeAttribute("user");
+                System.out.println("test2");
+                resp.sendRedirect("/login");
+            } else {
+                resp.sendRedirect("/login");
+            }
+
+        }
     }
 }
