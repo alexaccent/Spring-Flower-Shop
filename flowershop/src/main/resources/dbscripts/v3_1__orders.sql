@@ -1,0 +1,19 @@
+--------------------------------------------------------
+--  DDL for Table FLOWER_ORDER
+--------------------------------------------------------
+  CREATE TABLE FLOWERSHOP.FLOWER_ORDER
+   (
+        ID LONG PRIMARY KEY,
+	    CUSTOMER_ID LONG NOT NULL REFERENCES FLOWERSHOP.CUSTOMER(CUSTOMER_ID),
+	    FLOWER_ID LONG NOT NULL REFERENCES FLOWERSHOP.FLOWER(FLOWER_ID),
+	    FLOWER_ORDER_ID LONG REFERENCES FLOWERSHOP.FLOWER_ORDER(ID),
+	    NUMBER INT NOT NULL
+   );
+--------------------------------------------------------
+--  DDL for Table ORDERS
+--------------------------------------------------------
+  CREATE TABLE FLOWERSHOP.ORDERS
+   (
+        CUSTOMER_ID LONG NOT NULL REFERENCES FLOWERSHOP.CUSTOMER(CUSTOMER_ID),
+	    FLOWER_ORDER_ID LONG NOT NULL REFERENCES FLOWERSHOP.FLOWER_ORDER(FLOWER_ORDER_ID)
+   );
