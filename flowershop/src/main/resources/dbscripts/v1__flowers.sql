@@ -1,0 +1,26 @@
+CREATE SCHEMA "FLOWERSHOP";
+--------------------------------------------------------
+--  DDL for Table FLOWER
+--------------------------------------------------------
+CREATE TABLE FLOWERSHOP.FLOWER
+(
+    ID LONG PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(30) NOT NULL,
+    PRICE DECIMAL NOT NULL,
+    AMOUNT LONG NOT NULL,
+    IMAGE_URL VARCHAR(255)
+);
+
+INSERT INTO FLOWERSHOP.FLOWER (NAME, PRICE, AMOUNT, IMAGE_URL) VALUES ('Rose', 200.0, 30L,'static/images/rose.jpg');
+INSERT INTO FLOWERSHOP.FLOWER (NAME, PRICE, AMOUNT, IMAGE_URL) VALUES ('White Rose', 190.0, 20L,'static/images/whiterose.jpg');
+INSERT INTO FLOWERSHOP.FLOWER (NAME, PRICE, AMOUNT, IMAGE_URL) VALUES ('Сarnation', 90.0, 100L,'static/images/carnation.jpg');
+INSERT INTO FLOWERSHOP.FLOWER (NAME, PRICE, AMOUNT, IMAGE_URL) VALUES ('Hydrangea', 85.0, 50L,'static/images/hydrangea.jpg');
+INSERT INTO FLOWERSHOP.FLOWER (NAME, PRICE, AMOUNT, IMAGE_URL) VALUES ('Gladiolus', 150.0, 60L,'static/images/gladiolus.jpg');
+INSERT INTO FLOWERSHOP.FLOWER (NAME, PRICE, AMOUNT, IMAGE_URL) VALUES ('Glycinia', 100.0, 50L,'static/images/glycinia.jpg');
+INSERT INTO FLOWERSHOP.FLOWER (NAME, PRICE, AMOUNT, IMAGE_URL) VALUES ('Iris', 120.0, 50L,'static/images/iris.jpg');
+INSERT INTO FLOWERSHOP.FLOWER (NAME, PRICE, AMOUNT, IMAGE_URL) VALUES ('Lily', 100.0, 40L,'static/images/lily.jpg');
+INSERT INTO FLOWERSHOP.FLOWER (NAME, PRICE, AMOUNT, IMAGE_URL) VALUES ('Daisy', 130.0, 70L,'static/images/daisy.jpg');
+INSERT INTO FLOWERSHOP.FLOWER (NAME, PRICE, AMOUNT, IMAGE_URL) VALUES ('Orchid', 150.0, 60L,'static/images/orchid.jpg');
+INSERT INTO FLOWERSHOP.FLOWER (NAME, PRICE, AMOUNT, IMAGE_URL) VALUES ('Peony', 140.0, 80L,'static/images/peony.jpg');
+
+COMMIT;
