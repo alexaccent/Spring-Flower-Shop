@@ -12,9 +12,9 @@
     <nav class="site-header sticky-top py-1 mb-5">
       <div class="container d-flex flex-column flex-md-row justify-content-between">
         <a class="py-3 d-none d-md-inline-block" href="/registration">Регистрация</a>
-        <a class="py-3 d-none d-md-inline-block logo" href="/">Spring Flower Shop</a>
+        <a class="py-3 d-none d-md-inline-block logo" href="/main">Spring Flower Shop</a>
         <% if (uri.equals("/main.jsp")) { %>
-            <form class="mt-2 mb-0"  method="POST" action="/main">
+            <form class="py-2 mb-0 d-none d-md-inline-block"  method="POST" action="/main">
                 <button type="submit" name="logout" value="ok" class="btn btn-danger">Выйти</button>
             </form>
         <% } else { %>
