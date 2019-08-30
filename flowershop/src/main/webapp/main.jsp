@@ -1,12 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="com.accenture.flowershop.backend.entity.User" %>
+<%@ page import="com.accenture.flowershop.backend.entity.Customer" %>
+<%@ page import="com.accenture.flowershop.backend.entity.Flower" %>
 <%@ page import="java.lang.String" %>
 <%@ page import="java.util.*" %>
 <%@ include file="layout/header.jsp" %>
 <%
-    User userData = (User) request.getAttribute("userData");
-    Map<String, User> usersTable = (HashMap<String, User>) request.getAttribute("usersTable");
+    Customer userData = (Customer) request.getAttribute("userData");
+    ArrayList<Customer> usersTable = (ArrayList<Customer>) request.getAttribute("usersTable");
+    ArrayList<Flower> flowerForTable = (ArrayList<Flower>) request.getAttribute("flowerForTable");
 %>
 
 <div class="container" >
@@ -20,11 +22,55 @@
             </p>
             <p><span class="text-muted custom-h2">Location: Main page</span></p>
         </div>
+        <div class="col-6 text-center">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text" id="btnGroupAddon">&#10059;</div>
+            </div>
+            <input type="text" name="search" class="form-control" placeholder="Search" aria-label="Input group example" aria-describedby="btnGroupAddon">
+          </div>
+        </div>
+        <div class="col-6 text-center">
+            <button type="submit" form="orders" class="btn btn-danger">Оформить Заказ</button>
+        </div>
+
         <div class="col-12">
-            <table class="table">
+            <form id="orders" method="POST" action="/main"></form>
+            <table class="table table-flowers">
               <thead class="thead-dark">
                 <tr>
                   <th scope="col">id</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Amount</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+              <% if(flowerForTable != null && !flowerForTable.isEmpty()) { %>
+                  <% for (Flower flower : flowerForTable) { %>
+                    <tr>
+                      <th scope="row"><%= flower.getId() %></th>
+                      <td><%= flower.getName() %></td>
+                      <td><%= flower.getPrice() %></td>
+                      <td><%= flower.getAmount() %></td>
+                      <td><%= flower.getImageUrl() %></td>
+                      <td>
+                        <input class="input_amount" type="number" name="amount" pattern="^[ 0-9]+$" form="orders">
+                        <input type="hidden" name="flower_id" value='<%= flower.getId() %>' form="orders">
+                      </td>
+                    </tr>
+                   <% } %>
+               <% } %>
+              </tbody>
+            </table>
+        </div>
+
+        <div class="col-12 mt-5">
+            <table class="table table-striped">
+              <thead>
+                <tr>
                   <th scope="col">Login</th>
                   <th scope="col">Phone</th>
                   <th scope="col">Address</th>
@@ -36,7 +82,6 @@
               <tbody>
               <% if (userData != null) { %>
                 <tr>
-                  <th scope="row"><%= userData.getId() %></th>
                   <td><%= userData.getLogin() %></td>
                   <td><%= userData.getPhone() %></td>
                   <td><%= userData.getAddress() %></td>
@@ -57,7 +102,6 @@
             <table class="table">
               <thead class="thead-dark">
                 <tr>
-                  <th scope="col">id</th>
                   <th scope="col">Login</th>
                   <th scope="col">Phone</th>
                   <th scope="col">Address</th>
@@ -67,11 +111,9 @@
                 </tr>
               </thead>
               <tbody>
-              <% if(usersTable != null && !usersTable.isEmpty()) { %>
-                  <% for (Map.Entry<String, User> user : usersTable.entrySet()) { %>
-                    <% User userVal = user.getValue(); %>
+              <% if (usersTable != null && !usersTable.isEmpty()) { %>
+                  <% for (Customer userVal : usersTable) { %>
                     <tr>
-                      <th scope="row"><%= userVal.getId() %></th>
                       <td><%= userVal.getLogin() %></td>
                       <td><%= userVal.getPhone() %></td>
                       <td><%= userVal.getAddress() %></td>
@@ -79,7 +121,7 @@
                       <td><%= userData.getDiscount() %> %</td>
                       <td><%= userVal.getPassword() %></td>
                     </tr>
-                   <% } %>
+                  <% } %>
                <% } %>
               </tbody>
             </table>
