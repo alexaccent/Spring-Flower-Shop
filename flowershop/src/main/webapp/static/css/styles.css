@@ -41,6 +41,20 @@
   text-decoration: none;
 }
 
+
+/*
+ * Table
+ */
+
+.table th, td {
+    text-align: center;
+}
+
+.input_amount {
+    width: 80px;
+    text-align: center;
+}
+
 /*
  * Dummy devices (replace them with your own or something else entirely!)
  */
