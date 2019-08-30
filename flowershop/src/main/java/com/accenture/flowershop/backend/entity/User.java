@@ -1,93 +1,35 @@
 package com.accenture.flowershop.backend.entity;
 
-/**
- * @id int
- * @login String
- * @password String
- * @address String
- * @phone String
- * @balance String
- * @discount double
- */
-public class User {
-    private int id;
-    private String login;
-    private String password;
-    private String phone;
-    private String address;
-    private String balance;
-    private int discount;
-    private static int count = 0;
+import javax.persistence.*;
+import javax.persistence.InheritanceType;
+import java.io.Serializable;
 
-    public User(String login, String phone, String address, String password) {
-        this.login = login;
-        this.phone = phone;
-        this.address = address;
-        this.password = password;
-        setBalance("0.0");
-        setDiscount(0);
-        setId(++count);
-    }
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@DiscriminatorColumn(name = "type")
+public abstract class User {
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @Id
+    @Column(name="LOGIN")
+    protected String login;
 
-    public static int getCount() {
-        return count;
-    }
-
-    public String getBalance() {
-        return balance;
-    }
-
-    public void setBalance(String balance) {
-        this.balance = balance;
-    }
-
-    public int getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(int discount) {
-        this.discount = discount;
-    }
+    @Column(name="PASSWORD")
+    protected String password;
 
 
-
-    public int getId() {
-        return id;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public String getLogin() {
+        return login;
     }
 
     public void setLogin(String login) {
         this.login = login;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
