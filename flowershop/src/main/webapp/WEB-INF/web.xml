@@ -5,6 +5,14 @@
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
 
+  <resource-ref>
+    <description>flowerShopDS Connection</description>
+    <res-ref-name>jdbc/flowerShopDS</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+    <res-sharing-scope>Shareable</res-sharing-scope>
+  </resource-ref>
+
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath:/config/application-context.xml</param-value>
@@ -13,14 +21,6 @@
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
-
-  <resource-ref>
-    <description>flowerShopDS Connection</description>
-    <res-ref-name>jdbc/flowerShopDS</res-ref-name>
-    <res-type>javax.sql.DataSource</res-type>
-    <res-auth>Container</res-auth>
-    <res-sharing-scope>Shareable</res-sharing-scope>
-  </resource-ref>
 
   <servlet-mapping>
     <servlet-name>default</servlet-name>
@@ -34,5 +34,7 @@
     <servlet-name>default</servlet-name>
     <url-pattern>*.ico</url-pattern>
   </servlet-mapping>
+
+
 </web-app>
 
