@@ -2,9 +2,7 @@ package com.accenture.flowershop.frontend.servlets;
 
 
 import com.accenture.flowershop.backend.dao.CustomerDao;
-import com.accenture.flowershop.backend.entity.Customer;
-import com.accenture.flowershop.backend.entity.Flower;
-import com.accenture.flowershop.backend.entity.User;
+import com.accenture.flowershop.backend.entity.*;
 import com.accenture.flowershop.backend.services.Impl.FlowersBusinessServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -47,6 +45,7 @@ public class MainServlet extends HttpServlet {
             User userData = (User) session.getAttribute("user");
 
             if (userData != null) {
+
                 req.setAttribute("userData", userData);
 
                 // Customer table
@@ -58,9 +57,11 @@ public class MainServlet extends HttpServlet {
 
                 RequestDispatcher dispatcher = req.getRequestDispatcher("main.jsp");
                 dispatcher.forward(req, resp);
+
             } else {
                 resp.sendRedirect("/login");
             }
+
         } else {
             resp.sendRedirect("/login");
         }
