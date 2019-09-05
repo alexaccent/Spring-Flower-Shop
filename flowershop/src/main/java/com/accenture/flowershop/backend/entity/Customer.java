@@ -1,5 +1,7 @@
 package com.accenture.flowershop.backend.entity;
 
+import org.hibernate.annotations.Fetch;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -7,7 +9,7 @@ import java.util.*;
 
 @Entity
 @Table(name="FLOWERSHOP.CUSTOMER")
-public class Customer extends User implements Serializable {
+public class Customer extends User {
 
     @Column(name="PHONE")
     private String phone;
@@ -21,18 +23,12 @@ public class Customer extends User implements Serializable {
     @Column(name="DISCOUNT")
     private Integer discount;
 
-    @OneToMany(mappedBy="customer")
-    private Set<Orders> orders = new HashSet<>();
+
+    @Fetch(value = org.hibernate.annotations.FetchMode.SELECT)
+    @OneToMany(mappedBy = "customerId", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Orders> orders = new HashSet<Orders>();
 
     public Customer() {
-    }
-
-    public Set<Orders> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Set<Orders> orders) {
-        this.orders = orders;
     }
 
     public String getPhone() {
@@ -67,31 +63,12 @@ public class Customer extends User implements Serializable {
         this.discount = discount;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Customer customer = (Customer) o;
-        return Objects.equals(phone, customer.phone) &&
-                Objects.equals(address, customer.address) &&
-                Objects.equals(balance, customer.balance) &&
-                Objects.equals(discount, customer.discount);
+    public Set<Orders> getOrders() {
+        return orders;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(phone, address, balance, discount);
+    public void setOrders(Set<Orders> orders) {
+        this.orders = orders;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                ", balance='" + balance + '\'' +
-                ", discount=" + discount +
-                '}';
-    }
 }

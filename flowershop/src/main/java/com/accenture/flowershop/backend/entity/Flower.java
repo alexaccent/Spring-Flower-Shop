@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name="FLOWERSHOP.FLOWER")
-public class Flower implements Serializable {
+public class Flower {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class Flower implements Serializable {
     @Column(name = "AMOUNT")
     private Long amount;
 
-    @Column(name="IMAGE_URL", length = 255)
+    @Column(name="IMAGE_URL")
     private String imageUrl;
 
     public Flower() {
@@ -69,31 +69,4 @@ public class Flower implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Flower flower = (Flower) o;
-        return Objects.equals(id, flower.id) &&
-                Objects.equals(name, flower.name) &&
-                Objects.equals(price, flower.price) &&
-                Objects.equals(amount, flower.amount) &&
-                Objects.equals(imageUrl, flower.imageUrl);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, price, amount, imageUrl);
-    }
-
-    @Override
-    public String toString() {
-        return "Flower{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", numbers=" + amount +
-                ", imageUrl='" + imageUrl + '\'' +
-                '}';
-    }
 }

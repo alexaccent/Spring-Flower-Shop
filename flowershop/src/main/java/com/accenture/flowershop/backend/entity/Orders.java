@@ -3,16 +3,17 @@ package com.accenture.flowershop.backend.entity;
 import com.accenture.flowershop.frontend.enums.OrderStatus;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import static sun.jvm.hotspot.code.CompressedStream.L;
+
 @Entity
 @Table(name="FLOWERSHOP.ORDERS")
-public class Orders implements Serializable {
+public class Orders {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -21,7 +22,7 @@ public class Orders implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="OWNER_ORDERS")
-    private Customer customer;
+    private Customer customerId;
 
     @Column(name="STATUS")
     @Enumerated(EnumType.STRING)
@@ -30,11 +31,12 @@ public class Orders implements Serializable {
     @Column(name="PRICE")
     private BigDecimal price;
 
+    @Column(name="DISCOUNT_PRICE")
+    private BigDecimal discountPrice;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="ORDERS_DATE")
     private Date ordersDate;
-
-
 
     @OneToMany(mappedBy="ordersId", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<FlowerOrder> flowerOrders = new HashSet<>();
@@ -43,18 +45,9 @@ public class Orders implements Serializable {
     }
 
     public Orders(Customer customer, OrderStatus status) {
-        this.customer = customer;
+        this.customerId = customer;
         this.status = status;
-        price = new BigDecimal(100.0); // not done
-        ordersDate = new Date();
-    }
-
-    public Set<FlowerOrder> getFlowerOrders() {
-        return flowerOrders;
-    }
-
-    public void setFlowerOrders(Set<FlowerOrder> flowerOrders) {
-        this.flowerOrders = flowerOrders;
+        this.setOrdersDate(new Date());
     }
 
     public Long getId() {
@@ -65,6 +58,14 @@ public class Orders implements Serializable {
         this.id = id;
     }
 
+    public Customer getCustomer() {
+        return customerId;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customerId = customer;
+    }
+
     public OrderStatus getStatus() {
         return status;
     }
@@ -73,13 +74,38 @@ public class Orders implements Serializable {
         this.status = status;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
+
+    public BigDecimal getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public void setDiscountPrice(BigDecimal discountPrice) {
+        this.discountPrice = discountPrice;
+    }
+
+    public Date getOrdersDate() {
+        return ordersDate;
+    }
+
+    public void setOrdersDate(Date ordersDate) {
+        this.ordersDate = ordersDate;
+    }
+
+    public Set<FlowerOrder> getFlowerOrders() {
+        return flowerOrders;
+    }
+
+    public void setFlowerOrders(Set<FlowerOrder> flowerOrders) {
+        this.flowerOrders = flowerOrders;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -87,21 +113,12 @@ public class Orders implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Orders orders = (Orders) o;
         return Objects.equals(id, orders.id) &&
-                Objects.equals(status, orders.status) &&
-                Objects.equals(customer, orders.customer);
+                status == orders.status &&
+                Objects.equals(price, orders.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, status, customer);
-    }
-
-    @Override
-    public String toString() {
-        return "Orders{" +
-                "id=" + id +
-                ", status='" + status + '\'' +
-                ", customer=" + customer +
-                '}';
+        return Objects.hash(id, status, price);
     }
 }

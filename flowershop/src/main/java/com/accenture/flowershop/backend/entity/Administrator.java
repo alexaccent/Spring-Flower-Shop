@@ -42,25 +42,4 @@ public class Administrator extends User implements Serializable {
         this.accessLevel = accessLevel;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Administrator that = (Administrator) o;
-        return Objects.equals(balance, that.balance) &&
-                Objects.equals(accessLevel, that.accessLevel);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(balance, accessLevel);
-    }
-
-    @Override
-    public String toString() {
-        return "Administrator{" +
-                "balance=" + balance +
-                ", accesslevel='" + accessLevel + '\'' +
-                '}';
-    }
 }
