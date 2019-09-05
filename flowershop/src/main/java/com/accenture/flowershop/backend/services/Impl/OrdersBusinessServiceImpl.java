@@ -3,10 +3,7 @@ package com.accenture.flowershop.backend.services.Impl;
 import com.accenture.flowershop.backend.dao.CustomerDao;
 import com.accenture.flowershop.backend.dao.FlowerDao;
 import com.accenture.flowershop.backend.dao.OrdersDao;
-import com.accenture.flowershop.backend.entity.Customer;
-import com.accenture.flowershop.backend.entity.Flower;
-import com.accenture.flowershop.backend.entity.FlowerOrder;
-import com.accenture.flowershop.backend.entity.Orders;
+import com.accenture.flowershop.backend.entity.*;
 import com.accenture.flowershop.backend.services.OrdersBusinessService;
 import com.accenture.flowershop.exception.OrderPaymentException;
 import com.accenture.flowershop.frontend.enums.OrderStatus;
@@ -159,7 +156,7 @@ public class OrdersBusinessServiceImpl implements OrdersBusinessService {
         this.updateStatus(OrderStatus.CLOSED);
     }
 
-    public Set<Orders> getOrdersByStatusUser (Customer customer, OrderStatus ordersStatus) {
+    public Set<Orders> getOrdersByStatusUser (User customer, OrderStatus ordersStatus) {
 
         Customer customerBD = customerDao.getOne(customer.getLogin());
 

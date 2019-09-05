@@ -3,7 +3,6 @@ package com.accenture.flowershop.backend.services.Impl;
 import com.accenture.flowershop.backend.dao.AdministratorDao;
 import com.accenture.flowershop.backend.dao.CustomerDao;
 import com.accenture.flowershop.backend.dao.UserDao;
-import com.accenture.flowershop.backend.entity.Administrator;
 import com.accenture.flowershop.backend.entity.Customer;
 import com.accenture.flowershop.backend.entity.User;
 import com.accenture.flowershop.backend.services.UserBusinessService;
@@ -50,7 +49,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             customer.setPhone(phone);
             customer.setAddress(address);
             customer.setBalance(new BigDecimal(2000.0));
-            customer.setDiscount(30);
+            customer.setDiscount(0);
 
             customerDao.add(customer);
 
