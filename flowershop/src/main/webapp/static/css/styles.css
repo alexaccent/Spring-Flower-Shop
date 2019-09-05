@@ -48,6 +48,7 @@
 
 .table th, td {
     text-align: center;
+    width: 310px;
 }
 
 .input_amount {
