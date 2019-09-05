@@ -53,6 +53,7 @@
 
 .input_amount {
     width: 80px;
+    margin: 0 auto;
     text-align: center;
 }
 
