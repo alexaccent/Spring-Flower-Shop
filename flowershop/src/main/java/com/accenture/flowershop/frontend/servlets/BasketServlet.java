@@ -1,10 +1,7 @@
 package com.accenture.flowershop.frontend.servlets;
 
-import com.accenture.flowershop.backend.entity.Customer;
-import com.accenture.flowershop.backend.entity.Flower;
-import com.accenture.flowershop.backend.entity.Orders;
-import com.accenture.flowershop.backend.services.Impl.OrdersBusinessServiceImpl;
-import com.accenture.flowershop.backend.services.Impl.UserBusinessServiceImpl;
+import com.accenture.flowershop.backend.entity.*;
+import com.accenture.flowershop.backend.services.Impl.*;
 import com.accenture.flowershop.exception.OrderPaymentException;
 import com.accenture.flowershop.frontend.enums.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,49 +47,57 @@ public class BasketServlet  extends HttpServlet {
         session = req.getSession(false);
 
         if (session != null) {
-            userData = (Customer) session.getAttribute("user");
+            User checkUser = (User) session.getAttribute("user");
 
-            if (userData != null) {
-                req.setAttribute("userData", userData);
+            if (checkUser instanceof Customer) {
 
-                String[] arrayFlowerId = (String[]) session.getAttribute("arrayFlowerId");
-                String[] arrayAmounts = (String[]) session.getAttribute("arrayAmounts");
+                userData = (Customer) checkUser;
 
-                // Basket session
-                if (arrayFlowerId != null && arrayAmounts != null) {
+                if (userData != null) {
+                    req.setAttribute("userData", userData);
 
-                    ordersInSessions = ordersService.createOrdersForSession(arrayFlowerId, arrayAmounts);
-                    req.setAttribute("ordersInSessions", ordersInSessions);
+                    String[] arrayFlowerId = (String[]) session.getAttribute("arrayFlowerId");
+                    String[] arrayAmounts = (String[]) session.getAttribute("arrayAmounts");
 
-                    session.removeAttribute("arrayFlowerId");
-                    session.removeAttribute("arrayAmounts");
+                    // Basket session
+                    if (arrayFlowerId != null && arrayAmounts != null) {
+
+                        ordersInSessions = ordersService.createOrdersForSession(arrayFlowerId, arrayAmounts);
+                        req.setAttribute("ordersInSessions", ordersInSessions);
+
+                        session.removeAttribute("arrayFlowerId");
+                        session.removeAttribute("arrayAmounts");
+                    }
+
+                    // Created orders
+                    ordersByCreated = ordersService.getOrdersByStatusUser(userData, OrderStatus.CREATED);
+
+                    if (ordersByCreated != null && !ordersByCreated.isEmpty()) {
+                        req.setAttribute("ordersByCreated", ordersByCreated);
+                    }
+
+                    // Paid orders
+                    Set<Orders> ordersByPaid = ordersService.getOrdersByStatusUser(userData, OrderStatus.PAID);
+
+                    if (ordersByPaid != null && !ordersByPaid.isEmpty()) {
+                        req.setAttribute("ordersByPaid", ordersByPaid);
+                    }
+
+                    Set<Orders> ordersCreated = userData.getOrders();
+
+                    if (ordersCreated != null && !ordersCreated.isEmpty()) {
+                        req.setAttribute("ordersCreated", ordersCreated);
+                    }
+
+                    RequestDispatcher dispatcher = req.getRequestDispatcher("basket.jsp");
+                    dispatcher.forward(req, resp);
+                } else {
+                    resp.sendRedirect("/login");
                 }
-
-                // Created orders
-                ordersByCreated = ordersService.getOrdersByStatusUser(userData, OrderStatus.CREATED);
-
-                if (ordersByCreated != null && !ordersByCreated.isEmpty()) {
-                    req.setAttribute("ordersByCreated", ordersByCreated);
-                }
-
-                // Paid orders
-                Set<Orders> ordersByPaid = ordersService.getOrdersByStatusUser(userData, OrderStatus.PAID);
-
-                if (ordersByPaid != null && !ordersByPaid.isEmpty()) {
-                    req.setAttribute("ordersByPaid", ordersByPaid);
-                }
-
-                Set<Orders> ordersCreated = userData.getOrders();
-
-                if (ordersCreated != null && !ordersCreated.isEmpty()) {
-                    req.setAttribute("ordersCreated", ordersCreated);
-                }
-
-                RequestDispatcher dispatcher = req.getRequestDispatcher("basket.jsp");
-                dispatcher.forward(req, resp);
             } else {
-                resp.sendRedirect("/login");
+                resp.sendRedirect("/main");
             }
+
         } else {
             resp.sendRedirect("/login");
         }
