@@ -3,7 +3,6 @@ package com.accenture.flowershop.backend.entity;
 import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 

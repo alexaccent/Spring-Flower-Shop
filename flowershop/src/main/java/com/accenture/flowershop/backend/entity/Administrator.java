@@ -9,21 +9,10 @@ import java.util.Objects;
 @Table(name="FLOWERSHOP.ADMINISTRATOR")
 public class Administrator extends User implements Serializable {
 
-    @Column(name="BALANCE")
-    private BigDecimal balance;
-
     @Column(name="ACCESS_LEVEL")
     private String accessLevel;
 
     public Administrator() {
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
     }
 
     public String getType() {

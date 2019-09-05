@@ -3,6 +3,7 @@ package com.accenture.flowershop.backend.entity;
 import javax.persistence.*;
 import javax.persistence.InheritanceType;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -32,4 +33,5 @@ public abstract class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }
