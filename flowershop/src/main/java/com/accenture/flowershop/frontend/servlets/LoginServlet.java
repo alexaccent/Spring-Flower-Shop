@@ -1,5 +1,7 @@
 package com.accenture.flowershop.frontend.servlets;
+import com.accenture.flowershop.backend.entity.Administrator;
 import com.accenture.flowershop.backend.entity.Customer;
+import com.accenture.flowershop.backend.entity.User;
 import com.accenture.flowershop.backend.services.Impl.UserBusinessServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -18,7 +20,7 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
 
     @Autowired
-    private UserBusinessServiceImpl userServices;
+    private UserBusinessServiceImpl userServicesLogin;
 
     // private static final Logger LOG = LoggerFactory.getLogger(LoginServlet.class);
 
@@ -47,14 +49,20 @@ public class LoginServlet extends HttpServlet {
 
         if (login != null && !login.isEmpty() && password != null && !password.isEmpty() ) {
 
-            Customer userData = (Customer) userServices.login(login, password);
+            User userData =  userServicesLogin.login(login, password);
 
             if (userData != null) {
                 HttpSession session = req.getSession(true);
+
                 session.setAttribute("user", userData);
                 session.setMaxInactiveInterval(30*60);
 
-                resp.sendRedirect("/main");
+                if (userData instanceof Administrator) {
+                    resp.sendRedirect("/admin");
+                } else {
+                    resp.sendRedirect("/main");
+                }
+
             } else {
                 String error = "Вы ввели не верный логин или пароль";
                 req.setAttribute("error", error);

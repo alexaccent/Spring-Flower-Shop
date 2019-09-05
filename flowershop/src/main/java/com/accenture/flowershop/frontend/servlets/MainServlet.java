@@ -4,6 +4,7 @@ package com.accenture.flowershop.frontend.servlets;
 import com.accenture.flowershop.backend.dao.CustomerDao;
 import com.accenture.flowershop.backend.entity.Customer;
 import com.accenture.flowershop.backend.entity.Flower;
+import com.accenture.flowershop.backend.entity.User;
 import com.accenture.flowershop.backend.services.Impl.FlowersBusinessServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -43,12 +44,12 @@ public class MainServlet extends HttpServlet {
         HttpSession session = req.getSession(false);
 
         if (session != null) {
-            Customer userData = (Customer) session.getAttribute("user");
+            User userData = (User) session.getAttribute("user");
 
             if (userData != null) {
                 req.setAttribute("userData", userData);
 
-                // Users table
+                // Customer table
                 List<Customer> usersForTable = customerDao.getAll();
                 req.setAttribute("usersTable", usersForTable);
 
@@ -73,8 +74,6 @@ public class MainServlet extends HttpServlet {
         String[] arrayFlowerId = req.getParameterValues("flower_id");
         String[] arrayAmounts = req.getParameterValues("amount");
 
-        String logout = req.getParameter("logout");
-
         if (arrayFlowerId != null && arrayFlowerId.length > 0 ) {
 
             HttpSession session = req.getSession(true);
@@ -85,12 +84,16 @@ public class MainServlet extends HttpServlet {
             resp.sendRedirect("/basket");
         }
 
+        // Logout
+        String logout = req.getParameter("logout");
+
         if (logout != null && !logout.isEmpty() ) {
 
             HttpSession session = req.getSession(false);
 
             if (session != null) {
                 session.removeAttribute("user");
+                session.removeAttribute("ordersInSessions");
                 resp.sendRedirect("/login");
             } else {
                 resp.sendRedirect("/login");

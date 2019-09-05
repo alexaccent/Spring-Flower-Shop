@@ -2,7 +2,10 @@ package com.accenture.flowershop.frontend.servlets;
 
 import com.accenture.flowershop.backend.entity.Customer;
 import com.accenture.flowershop.backend.entity.Flower;
+import com.accenture.flowershop.backend.entity.Orders;
 import com.accenture.flowershop.backend.services.Impl.OrdersBusinessServiceImpl;
+import com.accenture.flowershop.backend.services.Impl.UserBusinessServiceImpl;
+import com.accenture.flowershop.exception.OrderPaymentException;
 import com.accenture.flowershop.frontend.enums.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -16,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Map;
+import java.util.*;
 
 @WebServlet(urlPatterns = "/basket")
 public class BasketServlet  extends HttpServlet {
@@ -24,7 +27,14 @@ public class BasketServlet  extends HttpServlet {
     @Autowired
     private OrdersBusinessServiceImpl ordersService;
 
+    @Autowired
+    private UserBusinessServiceImpl userService;
+
     private Map<Flower, String> ordersInSessions;
+
+    private  Set<Orders> ordersByCreated;
+
+    private HttpSession session;
 
     private Customer userData;
 
@@ -37,21 +47,45 @@ public class BasketServlet  extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        HttpSession session = req.getSession(false);
+        session = req.getSession(false);
 
         if (session != null) {
             userData = (Customer) session.getAttribute("user");
 
-            String[] arrayFlowerId = (String[]) session.getAttribute("arrayFlowerId");
-            String[] arrayAmounts = (String[]) session.getAttribute("arrayAmounts");
-
-            ordersInSessions = ordersService.createOrdersForSession(arrayFlowerId, arrayAmounts);
-
             if (userData != null) {
                 req.setAttribute("userData", userData);
 
-                if (ordersInSessions != null) {
+                String[] arrayFlowerId = (String[]) session.getAttribute("arrayFlowerId");
+                String[] arrayAmounts = (String[]) session.getAttribute("arrayAmounts");
+
+                // Basket session
+                if (arrayFlowerId != null && arrayAmounts != null) {
+
+                    ordersInSessions = ordersService.createOrdersForSession(arrayFlowerId, arrayAmounts);
                     req.setAttribute("ordersInSessions", ordersInSessions);
+
+                    session.removeAttribute("arrayFlowerId");
+                    session.removeAttribute("arrayAmounts");
+                }
+
+                // Created orders
+                ordersByCreated = ordersService.getOrdersByStatusUser(userData, OrderStatus.CREATED);
+
+                if (ordersByCreated != null && !ordersByCreated.isEmpty()) {
+                    req.setAttribute("ordersByCreated", ordersByCreated);
+                }
+
+                // Paid orders
+                Set<Orders> ordersByPaid = ordersService.getOrdersByStatusUser(userData, OrderStatus.PAID);
+
+                if (ordersByPaid != null && !ordersByPaid.isEmpty()) {
+                    req.setAttribute("ordersByPaid", ordersByPaid);
+                }
+
+                Set<Orders> ordersCreated = userData.getOrders();
+
+                if (ordersCreated != null && !ordersCreated.isEmpty()) {
+                    req.setAttribute("ordersCreated", ordersCreated);
                 }
 
                 RequestDispatcher dispatcher = req.getRequestDispatcher("basket.jsp");
@@ -68,6 +102,8 @@ public class BasketServlet  extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
 
+        session = req.getSession(false);
+
         if (userData != null) {
             String statusOrders = req.getParameter("status_orders").toUpperCase();
 
@@ -78,19 +114,52 @@ public class BasketServlet  extends HttpServlet {
 
                     if (ordersInSessions != null && !ordersInSessions.isEmpty()) {
                         System.out.println("Create orders. Add orders to bd");
-
                         ordersService.createOrders(userData, ordersInSessions);
+
+                        session.removeAttribute("ordersInSessions");
+                        session.removeAttribute("ordersByCreated");
+
+                        Set<Orders> ordersCreatedNew = ordersService.getOrdersByStatusUser(userData, OrderStatus.CREATED);
+                        req.setAttribute("ordersCreated", ordersCreatedNew);
                     }
                 }
 
                 // Pay orders
                 if (statusOrders.equals(OrderStatus.PAID.toString())) {
-                    System.out.println("PAY");
+                    System.out.println("pay orders");
+
+                    String ordersId = req.getParameter("orders_id");
+
+                    if (ordersId != null && !ordersId.isEmpty()) {
+                        try {
+                            ordersService.payOrders(userData, ordersId);
+
+                            session.removeAttribute("ordersCreated");
+                            Set<Orders> ordersCreatedUpdate = ordersService.getOrdersByStatusUser(userData, OrderStatus.CREATED);
+                            req.setAttribute("ordersCreated", ordersCreatedUpdate);
+
+                            session.removeAttribute("ordersByPaid");
+                            Set<Orders> ordersByPaidNew = ordersService.getOrdersByStatusUser(userData, OrderStatus.PAID);
+                            req.setAttribute("ordersByPaid", ordersByPaidNew);
+
+                            String message = "Ваш заказ успешно оплачен";
+                            req.setAttribute("message", message);
+                        } catch (OrderPaymentException ex) {
+                            req.setAttribute("error", ex.getMessage());
+                        }
+                    }
+                }
+
+                // Logout
+                String logout = req.getParameter("logout");
+                if (logout != null && !logout.isEmpty() ) {
+                    HttpSession session = req.getSession(false);
+                    userService.logout(session);
+                    resp.sendRedirect("/login");
                 }
             }
 
-            RequestDispatcher dispatcher = req.getRequestDispatcher("basket.jsp");
-            dispatcher.forward(req, resp);
+            doGet(req, resp);
         } else {
             resp.sendRedirect("/login");
         }
