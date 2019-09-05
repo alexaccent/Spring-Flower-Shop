@@ -29,5 +29,12 @@ public class OrdersDao {
     @Transactional
     public void add(Orders orders) {
         entityManager.persist(orders);
+        entityManager.flush();
+    }
+
+    @Transactional
+    public void update(Orders orders) {
+        entityManager.merge(orders);
+        entityManager.flush();
     }
 }

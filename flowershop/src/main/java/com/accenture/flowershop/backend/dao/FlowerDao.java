@@ -26,5 +26,12 @@ public class FlowerDao {
     @Transactional
     public void add(Flower flower) {
         entityManager.persist(flower);
+        entityManager.flush();
+    }
+
+    @Transactional
+    public void update(Flower flower) {
+        entityManager.merge(flower);
+        entityManager.flush();
     }
 }

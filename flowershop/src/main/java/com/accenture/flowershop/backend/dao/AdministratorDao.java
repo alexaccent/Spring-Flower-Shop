@@ -26,5 +26,12 @@ public class AdministratorDao {
     @Transactional
     public void add(Administrator administrator) {
         entityManager.persist(administrator);
+        entityManager.flush();
+    }
+
+    @Transactional
+    public void update(Administrator administrator) {
+        entityManager.merge(administrator);
+        entityManager.flush();
     }
 }
