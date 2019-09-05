@@ -24,8 +24,7 @@ public interface OrdersBusinessService {
      */
     Orders createOrders(Customer userData, Map<Flower, String> ordersInSessions);
 
-    Orders payOrders();
-
-    Orders closeOrders();
+//    void payOrders();
+//    void closeOrders();
 }
 
