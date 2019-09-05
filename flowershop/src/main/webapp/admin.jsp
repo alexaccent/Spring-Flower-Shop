@@ -13,20 +13,15 @@
     <div class="row justify-content-center align-items-center">
         <div class="text-center col-12">
             <p class="custom-h1" >
-                <span class="text-light bg-dark">Hello</span>
-                <% if (userData != null) { %>
-                    <span><%= userData.getLogin() %></span>
-                <% } %>
+                <span>Admin panel</span>
             </p>
-            <p><span class="text-muted custom-h2">Location: Main page</span></p>
         </div>
 
-        <div class="col-12 mt-5">
+        <div class="col-12 mt-3">
             <table class="table table-striped">
               <thead>
                 <tr>
                   <th scope="col">Login</th>
-                  <th scope="col">Balance</th>
                   <th scope="col">Access level</th>
                   <th scope="col">Password</th>
                 </tr>
@@ -35,8 +30,7 @@
               <% if (userData != null) { %>
                 <tr>
                   <td><%= userData.getLogin() %></td>
-                  <td><%= userData.getBalance() %></td>
-                  <td><%= userData.getAccessLevel() %> %</td>
+                  <td><%= userData.getAccessLevel() %></td>
                   <td><%= userData.getPassword() %></td>
                 </tr>
                <% } %>
