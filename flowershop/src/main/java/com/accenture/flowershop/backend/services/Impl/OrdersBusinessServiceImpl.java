@@ -5,6 +5,7 @@ import com.accenture.flowershop.backend.dao.FlowerDao;
 import com.accenture.flowershop.backend.dao.OrdersDao;
 import com.accenture.flowershop.backend.entity.*;
 import com.accenture.flowershop.backend.services.OrdersBusinessService;
+import com.accenture.flowershop.exception.OrderCloseException;
 import com.accenture.flowershop.exception.OrderPaymentException;
 import com.accenture.flowershop.frontend.enums.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,13 +151,7 @@ public class OrdersBusinessServiceImpl implements OrdersBusinessService {
         }
     }
 
-
-
-    public void closeOrders() {
-        this.updateStatus(OrderStatus.CLOSED);
-    }
-
-    public Set<Orders> getOrdersByStatusUser (User customer, OrderStatus ordersStatus) {
+    public Set<Orders> getOrdersByStatusToUser(User customer, OrderStatus ordersStatus) {
 
         Customer customerBD = customerDao.getOne(customer.getLogin());
 
@@ -185,6 +180,47 @@ public class OrdersBusinessServiceImpl implements OrdersBusinessService {
                 ordersDao.update(ordersOne);
             }
         }
+    }
+
+    public void closeOrder (String orderId) throws OrderCloseException {
+        Long ordersIdLong = Long.parseLong(orderId);
+        Orders orderById = ordersDao.getOne(ordersIdLong);
+
+        if (orderById != null && orderById.getStatus().equals(OrderStatus.PAID)) {
+
+            orderById.setStatus(OrderStatus.CLOSED);
+            ordersDao.update(orderById);
+        } else {
+            throw new OrderCloseException("Ошибка закыртия заказа");
+        }
+
+    }
+
+    public void closeOrdersAll (String[] arrayOrdersId) throws OrderCloseException {
+
+        for (String ordersId : arrayOrdersId) {
+
+            Long ordersIdLong = Long.parseLong(ordersId);
+            Orders orderById = ordersDao.getOne(ordersIdLong);
+
+            if (orderById != null) {
+
+                if (orderById.getStatus().equals(OrderStatus.PAID)) {
+                    orderById.setStatus(OrderStatus.CLOSED);
+                    ordersDao.update(orderById);
+                }
+            } else {
+                throw new OrderCloseException("Ошибка закыртия заказов");
+            }
+        }
+    }
+
+
+    public List<Orders> getOrdersByStatus(OrderStatus ordersStatus) {
+
+        List<Orders> listOrders = ordersDao.getByStatus(ordersStatus);
+
+        return listOrders;
     }
 
 }
