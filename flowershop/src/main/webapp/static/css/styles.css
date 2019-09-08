@@ -19,13 +19,12 @@
  }
 
  .custom-h1 {
-
-       font-size: 30px;
+    font-size: 30px;
  }
 
-  .custom-h2 {
-      font-size: 20px;
-  }
+ .custom-h2 {
+    font-size: 20px;
+ }
 
 .site-header {
   background-color: rgba(0, 0, 0, .85);
