@@ -20,7 +20,7 @@ public class Orders {
     @Column(name="ID")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="OWNER_ORDERS")
     private Customer customerId;
 
