@@ -70,14 +70,14 @@ public class BasketServlet  extends HttpServlet {
                     }
 
                     // Created orders
-                    ordersByCreated = ordersService.getOrdersByStatusUser(userData, OrderStatus.CREATED);
+                    ordersByCreated = ordersService.getOrdersByStatusToUser(userData, OrderStatus.CREATED);
 
                     if (ordersByCreated != null && !ordersByCreated.isEmpty()) {
                         req.setAttribute("ordersByCreated", ordersByCreated);
                     }
 
                     // Paid orders
-                    Set<Orders> ordersByPaid = ordersService.getOrdersByStatusUser(userData, OrderStatus.PAID);
+                    Set<Orders> ordersByPaid = ordersService.getOrdersByStatusToUser(userData, OrderStatus.PAID);
 
                     if (ordersByPaid != null && !ordersByPaid.isEmpty()) {
                         req.setAttribute("ordersByPaid", ordersByPaid);
@@ -124,7 +124,7 @@ public class BasketServlet  extends HttpServlet {
                         session.removeAttribute("ordersInSessions");
                         session.removeAttribute("ordersByCreated");
 
-                        Set<Orders> ordersCreatedNew = ordersService.getOrdersByStatusUser(userData, OrderStatus.CREATED);
+                        Set<Orders> ordersCreatedNew = ordersService.getOrdersByStatusToUser(userData, OrderStatus.CREATED);
                         req.setAttribute("ordersCreated", ordersCreatedNew);
                     }
                 }
@@ -140,11 +140,11 @@ public class BasketServlet  extends HttpServlet {
                             ordersService.payOrders(userData, ordersId);
 
                             session.removeAttribute("ordersCreated");
-                            Set<Orders> ordersCreatedUpdate = ordersService.getOrdersByStatusUser(userData, OrderStatus.CREATED);
+                            Set<Orders> ordersCreatedUpdate = ordersService.getOrdersByStatusToUser(userData, OrderStatus.CREATED);
                             req.setAttribute("ordersCreated", ordersCreatedUpdate);
 
                             session.removeAttribute("ordersByPaid");
-                            Set<Orders> ordersByPaidNew = ordersService.getOrdersByStatusUser(userData, OrderStatus.PAID);
+                            Set<Orders> ordersByPaidNew = ordersService.getOrdersByStatusToUser(userData, OrderStatus.PAID);
                             req.setAttribute("ordersByPaid", ordersByPaidNew);
 
                             String message = "Ваш заказ успешно оплачен";
