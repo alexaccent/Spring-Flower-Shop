@@ -1,4 +1,4 @@
-# ee_polyakov
+# Spring flower shop
 Spring Flower Shop - internet-shop flowers
 
 Description.
