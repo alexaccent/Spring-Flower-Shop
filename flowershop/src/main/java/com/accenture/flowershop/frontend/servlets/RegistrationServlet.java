@@ -2,6 +2,7 @@ package com.accenture.flowershop.frontend.servlets;
 
 import com.accenture.flowershop.backend.entity.Customer;
 import com.accenture.flowershop.backend.services.Impl.UserBusinessServiceImpl;
+import com.accenture.flowershop.backend.services.Impl.UserMarshgallingServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -20,6 +21,9 @@ public class RegistrationServlet extends HttpServlet {
 
     @Autowired
     private UserBusinessServiceImpl userServicesRegistration;
+
+    @Autowired
+    private UserMarshgallingServiceImp userMarshgallingService;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -48,6 +52,7 @@ public class RegistrationServlet extends HttpServlet {
         if (login != null && !login.isEmpty() && password != null && !password.isEmpty() && phone != null && !phone.isEmpty() && address != null && !address.isEmpty()){
 
             Customer returnUser = (Customer) userServicesRegistration.register(login, password, phone, address);
+            userMarshgallingService.convertFromObjectToXML(returnUser, userMarshgallingService.getPath() + returnUser.getLogin() + ".xml");
 
             if (returnUser != null) {
 
