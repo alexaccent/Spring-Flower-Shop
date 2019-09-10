@@ -9,8 +9,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import static sun.jvm.hotspot.code.CompressedStream.L;
-
 @Entity
 @Table(name="FLOWERSHOP.ORDERS")
 public class Orders {
