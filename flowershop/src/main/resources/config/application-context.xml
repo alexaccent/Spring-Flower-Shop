@@ -4,6 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jee="http://www.springframework.org/schema/jee"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:oxm="http://www.springframework.org/schema/oxm"
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans
@@ -14,6 +15,8 @@
        http://springframework.org/schema/jee/spring-jee.xsd
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/oxm
+       http://www.springframework.org/schema/oxm/spring-oxm.xsd
        http://www.springframework.org/schema/util
        http://www.springframework.org/schema/util/spring-util.xsd"
 >
@@ -67,6 +70,13 @@
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" >
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
+
+    <bean id="XMLConverter" class="com.accenture.flowershop.backend.services.Impl.UserMarshgallingServiceImp">
+        <property name="marshaller" ref="castorMarshaller" />
+        <property name="unmarshaller" ref="castorMarshaller" />
+        <property name="path" value="src/main/webapp/xml/" />
+    </bean>
+    <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller" />
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>
