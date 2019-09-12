@@ -7,7 +7,7 @@ import com.accenture.flowershop.backend.entity.*;
 import com.accenture.flowershop.backend.services.OrdersBusinessService;
 import com.accenture.flowershop.exception.OrderCloseException;
 import com.accenture.flowershop.exception.OrderPaymentException;
-import com.accenture.flowershop.frontend.enums.OrderStatus;
+import com.accenture.flowershop.enums.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package com.accenture.flowershop.backend.entity;
 
-import com.accenture.flowershop.frontend.enums.OrderStatus;
+import com.accenture.flowershop.enums.OrderStatus;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

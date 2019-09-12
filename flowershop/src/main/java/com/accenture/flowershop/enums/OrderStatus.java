@@ -1,4 +1,4 @@
-package com.accenture.flowershop.frontend.enums;
+package com.accenture.flowershop.enums;
 
 public enum OrderStatus {
     CREATED,

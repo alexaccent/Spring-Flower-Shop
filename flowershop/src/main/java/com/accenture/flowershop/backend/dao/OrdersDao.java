@@ -1,7 +1,7 @@
 package com.accenture.flowershop.backend.dao;
 
 import com.accenture.flowershop.backend.entity.Orders;
-import com.accenture.flowershop.frontend.enums.OrderStatus;
+import com.accenture.flowershop.enums.OrderStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

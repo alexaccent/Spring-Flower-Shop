@@ -52,10 +52,9 @@ public class RegistrationServlet extends HttpServlet {
         if (login != null && !login.isEmpty() && password != null && !password.isEmpty() && phone != null && !phone.isEmpty() && address != null && !address.isEmpty()){
 
             Customer returnUser = (Customer) userServicesRegistration.register(login, password, phone, address);
-            userMarshgallingService.convertFromObjectToXML(returnUser, userMarshgallingService.getPath() + returnUser.getLogin() + ".xml");
 
             if (returnUser != null) {
-
+                userMarshgallingService.convertFromObjectToXML(returnUser, userMarshgallingService.getPath() + returnUser.getLogin() + ".xml");
                 resp.sendRedirect("/");
             } else {
 
