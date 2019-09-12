@@ -20,6 +20,8 @@
     <hibernate.version>4.3.11.Final</hibernate.version>
     <jaxb.version>2.2.11</jaxb.version>
     <cxf.version>3.0.8</cxf.version>
+<!--    <jersey.version>2.24.1</jersey.version>-->
+    <jersey.version>2.27</jersey.version>
   </properties>
 
   <dependencies>
@@ -65,6 +67,27 @@
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-transports-http</artifactId>
       <version>${cxf.version}</version>
+    </dependency>
+    <!-- Jersey -->
+    <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-servlet</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-json-jackson</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.ext</groupId>
+      <artifactId>jersey-spring4</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.inject</groupId>
+      <artifactId>jersey-hk2</artifactId>
+      <version>${jersey.version}</version>
     </dependency>
     <!-- FlyWay -->
     <dependency>
