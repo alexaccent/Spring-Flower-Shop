@@ -6,6 +6,8 @@
     String error = (String) request.getAttribute("error");
 %>
 
+<script src="static/js/main.js"></script>
+
 <div class="container" >
     <div class="row justify-content-center align-items-center">
         <div class="col-6">
@@ -24,7 +26,7 @@
             <form method="POST" action="/registration" class="mb-5">
               <div class="form-group">
                 <label for="login">Логин</label>
-                <input type="text" name="login" class="form-control" id="login" placeholder="Login">
+                <input type="text" id="login" name="login" class="form-control" id="login" placeholder="Login">
               </div>
               <div class="form-group">
                 <label for="phone">Телефон</label>
@@ -38,7 +40,7 @@
                 <label for="password">Пароль</label>
                 <input type="password" name="password" class="form-control" id="password" placeholder="Password">
               </div>
-              <button type="submit" class="btn btn-primary">Регистрация</button>
+              <button type="submit" id="button-reg" class="btn btn-primary" >Регистрация</button>
             </form>
         </div>
     </div>
