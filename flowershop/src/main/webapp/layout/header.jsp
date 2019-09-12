@@ -6,6 +6,8 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" href="/static/css/styles.css" />
+
+    <script src="static/js/lib/jquery-3.4.1.min.js"></script>
 </head>
 <body class="d-flex flex-column h-100">
 <main class="flex-shrink-0">
