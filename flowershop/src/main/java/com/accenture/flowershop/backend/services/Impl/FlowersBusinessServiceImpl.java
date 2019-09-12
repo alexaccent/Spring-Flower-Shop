@@ -17,4 +17,18 @@ public class FlowersBusinessServiceImpl implements FlowersBusinessService {
     public List<Flower> flowerForTable() {
         return  flowerDao.getAll();
     }
+
+    public void updateFlowersAmount(long amount) {
+
+        List<Flower> flowers = flowerDao.getAll();
+
+        for(Flower flower : flowers) {
+
+            long newFlowerAmount = flower.getAmount() + amount;
+            Flower flowerFromBd = flowerDao.getOne(flower.getId());
+            flowerFromBd.setAmount(newFlowerAmount);
+
+            flowerDao.update(flowerFromBd);
+        }
+    }
 }

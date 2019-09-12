@@ -10,4 +10,10 @@ public interface FlowersBusinessService {
      * @return List<Flower>
      */
     List<Flower> flowerForTable();
+
+    /**
+     * Add amount flowers
+     * @param amount add to a flower
+     */
+    public void updateFlowersAmount(long amount);
 }
