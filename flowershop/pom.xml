@@ -19,6 +19,7 @@
     <spring.version>4.3.0.RELEASE</spring.version>
     <hibernate.version>4.3.11.Final</hibernate.version>
     <jaxb.version>2.2.11</jaxb.version>
+    <cxf.version>3.0.8</cxf.version>
   </properties>
 
   <dependencies>
@@ -54,26 +55,16 @@
         <artifactId>castor</artifactId>
         <version>1.2</version>
     </dependency>
-    <!-- JAXB -->
+    <!-- CXF -->
     <dependency>
-      <groupId>javax.xml.bind</groupId>
-      <artifactId>jaxb-api</artifactId>
-      <version>${jaxb.version}</version>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxws</artifactId>
+      <version>${cxf.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-core</artifactId>
-      <version>${jaxb.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
-      <version>${jaxb.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.activation</groupId>
-      <artifactId>activation</artifactId>
-      <version>1.1.1</version>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-transports-http</artifactId>
+      <version>${cxf.version}</version>
     </dependency>
     <!-- FlyWay -->
     <dependency>
