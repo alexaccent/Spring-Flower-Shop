@@ -7,10 +7,10 @@ import javax.xml.ws.WebServiceRef;
 
 public class FlowersStockWebServiceClientImpl implements FlowersStockWebServiceClient {
 
-    @WebServiceRef(wsdlLocation="http://localhost:8080/ws/FlowersStockWebService?wsdl")
     static FlowersStockWebServiceImpl service;
 
-    public static void main(String[] args) {
+    @WebServiceRef(wsdlLocation="http://localhost:8080/ws/FlowersStockWebService?wsdl")
+    public void autoIncrement() {
         service.increaseFlowersStockSize(6);
     }
 }
