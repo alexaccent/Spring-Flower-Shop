@@ -27,7 +27,7 @@
     <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
     <init-param>
       <param-name>jersey.config.server.provider.packages</param-name>
-      <param-value>com.accenture.flowershop.frontend.rest</param-value>
+      <param-value>com.accenture.flowershop.frontend.rs</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
@@ -64,7 +64,6 @@
     <servlet-name>default</servlet-name>
     <url-pattern>*.ico</url-pattern>
   </servlet-mapping>
-
 
 </web-app>
 
