@@ -9,7 +9,6 @@ import java.io.Serializable;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorColumn(name = "type")
-@XmlRootElement
 public abstract class User implements Serializable {
 
     @Id
@@ -19,22 +18,18 @@ public abstract class User implements Serializable {
     @Column(name="PASSWORD")
     protected String password;
 
-    @XmlAttribute
     public String getLogin() {
         return login;
     }
 
-    @XmlAttribute
     public void setLogin(String login) {
         this.login = login;
     }
 
-    @XmlAttribute
     public String getPassword() {
         return password;
     }
 
-    @XmlAttribute
     public void setPassword(String password) {
         this.password = password;
     }
