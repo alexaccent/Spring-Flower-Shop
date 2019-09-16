@@ -5,9 +5,8 @@ import org.springframework.oxm.Unmarshaller;
 
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+
 
 public class UserMarshgallingServiceImp {
 
@@ -32,6 +31,19 @@ public class UserMarshgallingServiceImp {
         }
     }
 
+    public String convertFromObjectToString(Object object) throws IOException {
+
+            StringWriter sw = new StringWriter();
+        try {
+            getMarshaller().marshal(object, new StreamResult(sw));
+            return sw.toString();
+        } finally {
+            if (sw != null) {
+                sw.close();
+            }
+        }
+    }
+
     public Object convertFromXMLToObject(String xmlfile) throws IOException {
 
         FileInputStream is = null;
@@ -43,6 +55,11 @@ public class UserMarshgallingServiceImp {
                 is.close();
             }
         }
+    }
+
+    public Object convertFromStringXMLToObject(String stringXml) throws IOException {
+        StringReader sr  = new StringReader(stringXml);
+        return getUnmarshaller().unmarshal(new StreamSource(sr));
     }
 
     public Marshaller getMarshaller() {
