@@ -4,9 +4,9 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jee="http://www.springframework.org/schema/jee"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
        xmlns:oxm="http://www.springframework.org/schema/oxm"
        xmlns:util="http://www.springframework.org/schema/util"
-       xmlns:jaxws="http://cxf.apache.org/jaxws"
 
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans
@@ -24,7 +24,6 @@
        http://www.springframework.org/schema/util
        http://www.springframework.org/schema/util/spring-util.xsd"
 >
-
 
     <context:component-scan base-package="com.accenture.flowershop"/>
     <jee:jndi-lookup id="dataSource" jndi-name="jdbc/flowerShopDS"/>
@@ -82,8 +81,10 @@
         <property name="unmarshaller" ref="castorMarshaller" />
         <property name="path" value="src/main/webapp/xml/" />
     </bean>
-    <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller" />
 
+    <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller" >
+        <property name="mappingLocation" value="classpath:config/mapping.xml" />
+    </bean>
 
     <!-- Service implementor bean -->
     <bean id="FlowersStockWebService" class="com.accenture.flowershop.frontend.ws.Impl.FlowersStockWebServiceImpl" />
@@ -96,6 +97,10 @@
      serviceClass="com.accenture.flowershop.frontend.ws.Impl.FlowersStockWebServiceClientImpl"
      address="http://localhost:8080/ws/FlowersStockWebService"/>
 
+    <jee:jndi-lookup id="connectionFactory" jndi-name="jms/connectionFactory"/>
+
+    <jee:jndi-lookup id="inQueue" jndi-name="jms/queue/inQueue"/>
+    <jee:jndi-lookup id="outQueue" jndi-name="jms/queue/outQueue"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>
