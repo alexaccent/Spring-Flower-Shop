@@ -1,14 +1,14 @@
 package com.accenture.flowershop.backend.entity;
 
 import org.hibernate.annotations.Fetch;
-
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
 @Table(name="FLOWERSHOP.CUSTOMER")
-public class Customer extends User {
+public class Customer extends User implements Serializable {
 
     @Column(name="PHONE")
     private String phone;
@@ -69,5 +69,4 @@ public class Customer extends User {
     public void setOrders(Set<Orders> orders) {
         this.orders = orders;
     }
-
 }

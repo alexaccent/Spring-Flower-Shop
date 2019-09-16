@@ -64,6 +64,10 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         session.removeAttribute("ordersInSessions");
     }
 
+    public void updateCustomer(Customer customer){
+        customerDao.update(customer);
+    }
+
     public User updateUserSession(Customer userDataSession) {
         Customer userUpdateSession = customerDao.getOne(userDataSession.getLogin());
         return userUpdateSession;

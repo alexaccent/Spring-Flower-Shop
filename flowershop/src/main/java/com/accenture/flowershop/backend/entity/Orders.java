@@ -1,6 +1,6 @@
 package com.accenture.flowershop.backend.entity;
 
-import com.accenture.flowershop.frontend.enums.OrderStatus;
+import com.accenture.flowershop.enums.OrderStatus;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -8,8 +8,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
-import static sun.jvm.hotspot.code.CompressedStream.L;
 
 @Entity
 @Table(name="FLOWERSHOP.ORDERS")

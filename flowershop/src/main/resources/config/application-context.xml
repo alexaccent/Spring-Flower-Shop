@@ -4,7 +4,10 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jee="http://www.springframework.org/schema/jee"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xmlns:oxm="http://www.springframework.org/schema/oxm"
        xmlns:util="http://www.springframework.org/schema/util"
+
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -14,9 +17,14 @@
        http://springframework.org/schema/jee/spring-jee.xsd
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://cxf.apache.org/jaxws
+       http://cxf.apache.org/schemas/jaxws.xsd
+       http://www.springframework.org/schema/oxm
+       http://www.springframework.org/schema/oxm/spring-oxm.xsd
        http://www.springframework.org/schema/util
        http://www.springframework.org/schema/util/spring-util.xsd"
 >
+
     <context:component-scan base-package="com.accenture.flowershop"/>
     <jee:jndi-lookup id="dataSource" jndi-name="jdbc/flowerShopDS"/>
 
@@ -67,6 +75,32 @@
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" >
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
+
+    <bean id="XMLConverter" class="com.accenture.flowershop.backend.services.Impl.UserMarshgallingServiceImp">
+        <property name="marshaller" ref="castorMarshaller" />
+        <property name="unmarshaller" ref="castorMarshaller" />
+        <property name="path" value="src/main/webapp/xml/" />
+    </bean>
+
+    <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller" >
+        <property name="mappingLocation" value="classpath:config/mapping.xml" />
+    </bean>
+
+    <!-- Service implementor bean -->
+    <bean id="FlowersStockWebService" class="com.accenture.flowershop.frontend.ws.Impl.FlowersStockWebServiceImpl" />
+    <!-- JAX-WS endpoint bean which is picked up by CXF -->
+    <jaxws:endpoint id="FlowersStockWebService1" implementor="#FlowersStockWebService"
+                    address="/FlowersStockWebService"/>
+
+    <!-- JAX-WS client -->
+     <jaxws:client id="FlowersStockWebServiceClient"
+     serviceClass="com.accenture.flowershop.frontend.ws.Impl.FlowersStockWebServiceClientImpl"
+     address="http://localhost:8080/ws/FlowersStockWebService"/>
+
+    <jee:jndi-lookup id="connectionFactory" jndi-name="jms/connectionFactory"/>
+
+    <jee:jndi-lookup id="inQueue" jndi-name="jms/queue/inQueue"/>
+    <jee:jndi-lookup id="outQueue" jndi-name="jms/queue/outQueue"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>

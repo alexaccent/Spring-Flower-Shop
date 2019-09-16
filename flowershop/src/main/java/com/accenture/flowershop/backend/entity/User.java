@@ -2,13 +2,14 @@ package com.accenture.flowershop.backend.entity;
 
 import javax.persistence.*;
 import javax.persistence.InheritanceType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorColumn(name = "type")
-public abstract class User {
+public abstract class User implements Serializable {
 
     @Id
     @Column(name="LOGIN")
@@ -16,7 +17,6 @@ public abstract class User {
 
     @Column(name="PASSWORD")
     protected String password;
-
 
     public String getLogin() {
         return login;
@@ -34,4 +34,11 @@ public abstract class User {
         this.password = password;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

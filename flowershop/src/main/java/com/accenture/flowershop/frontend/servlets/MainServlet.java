@@ -33,7 +33,6 @@ public class MainServlet extends HttpServlet {
         super.init(config);
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
                 config.getServletContext());
-        flowerForTable = flowersService.flowerForTable();
     }
 
     @Override
@@ -53,7 +52,13 @@ public class MainServlet extends HttpServlet {
                 req.setAttribute("usersTable", usersForTable);
 
                 // Flowers table
+                flowerForTable = flowersService.flowerForTable();
                 req.setAttribute("flowerForTable", flowerForTable);
+
+                if (!flowerForTable.isEmpty()) {
+                    session.removeAttribute("flowerForTable");
+                    req.setAttribute("flowerForTable", flowerForTable);
+                }
 
                 RequestDispatcher dispatcher = req.getRequestDispatcher("main.jsp");
                 dispatcher.forward(req, resp);

@@ -26,6 +26,11 @@
     font-size: 20px;
  }
 
+  .red-input, .red-input:focus {
+     border-color: #bd1e2a !important;
+     box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25) !important;
+  }
+
 .site-header {
   background-color: rgba(0, 0, 0, .85);
   -webkit-backdrop-filter: saturate(180%) blur(20px);

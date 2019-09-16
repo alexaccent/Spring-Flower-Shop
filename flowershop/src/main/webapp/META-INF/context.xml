@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Context>
+
     <Parameter name="AppName" value="cbr-clm"/>
     <Resource
         name="jdbc/flowerShopDS" auth="Container"
@@ -13,5 +14,21 @@
         testWhileIdle="true"
         validationQuery="Select 1 From dual"
         maxWait="-1"
+    />
+    <!-- JMS -->
+    <Resource name="jms/connectionFactory" auth="Container"
+              type="org.apache.activemq.ActiveMQConnectionFactory"
+              factory="org.apache.activemq.jndi.JNDIReferenceFactory"
+              brokerURL="tcp://localhost:61616" brokerName="MyActiveMqBroker"
+    />
+    <Resource name="jms/queue/inQueue" auth="Container"
+              type="org.apache.activemq.command.ActiveMQQueue"
+              factory="org.apache.activemq.jndi.JNDIReferenceFactory"
+              physicalName="IN_QUEUE"
+    />
+    <Resource name="jms/queue/outQueue" auth="Container"
+              type="org.apache.activemq.command.ActiveMQQueue"
+              factory="org.apache.activemq.jndi.JNDIReferenceFactory"
+              physicalName="OUT_QUEUE"
     />
 </Context>

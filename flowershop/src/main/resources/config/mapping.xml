@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+        "http://castor.org/mapping.dtd">
+<mapping>
+    <class name="com.accenture.flowershop.backend.entity.Customer">
+        <map-to xml="customer" />
+        <field name="login" />
+        <field name="password" />
+        <field name="address" />
+        <field name="phone" />
+        <field name="balance" />
+        <field name="discount" />
+    </class>
+</mapping>
