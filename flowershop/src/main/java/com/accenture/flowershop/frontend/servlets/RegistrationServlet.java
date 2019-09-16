@@ -3,9 +3,11 @@ package com.accenture.flowershop.frontend.servlets;
 import com.accenture.flowershop.backend.entity.Customer;
 import com.accenture.flowershop.backend.services.Impl.UserBusinessServiceImpl;
 import com.accenture.flowershop.backend.services.Impl.UserMarshgallingServiceImp;
+import com.accenture.flowershop.frontend.jms.MessagesJms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import javax.jms.JMSException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -13,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.Marshaller;
 import java.io.IOException;
 
 
@@ -24,6 +27,9 @@ public class RegistrationServlet extends HttpServlet {
 
     @Autowired
     private UserMarshgallingServiceImp userMarshgallingService;
+
+    @Autowired
+    private MessagesJms messagesJms;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -54,7 +60,19 @@ public class RegistrationServlet extends HttpServlet {
             Customer returnUser = (Customer) userServicesRegistration.register(login, password, phone, address);
 
             if (returnUser != null) {
-                userMarshgallingService.convertFromObjectToXML(returnUser, userMarshgallingService.getPath() + returnUser.getLogin() + ".xml");
+
+                String filepathXML = userMarshgallingService.getPath() + returnUser.getLogin() + ".xml";
+
+                userMarshgallingService.convertFromObjectToXML(returnUser, filepathXML);
+
+                String stringXml = userMarshgallingService.convertFromObjectToString(returnUser);
+
+                try {
+                    messagesJms.outMessages(stringXml);
+                } catch (JMSException e) {
+                    e.printStackTrace();
+                }
+
                 resp.sendRedirect("/");
             } else {
 
