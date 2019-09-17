@@ -2,6 +2,7 @@ package com.accenture.flowershop.frontend.servlets;
 
 
 import com.accenture.flowershop.backend.dao.CustomerDao;
+import com.accenture.flowershop.backend.dao.FlowerDao;
 import com.accenture.flowershop.backend.entity.*;
 import com.accenture.flowershop.backend.services.Impl.FlowersBusinessServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class MainServlet extends HttpServlet {
 
     private List<Flower> flowerForTable;
 
+    private String priceMinInSearch;
+    private String priceMaxInSearch;
+
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
@@ -47,13 +51,34 @@ public class MainServlet extends HttpServlet {
 
                 req.setAttribute("userData", userData);
 
+                String search = req.getParameter("search");
+                priceMinInSearch = req.getParameter("amount_min");
+                priceMaxInSearch = req.getParameter("amount_max");
+
+                // Flowers table
+                if (search != null && !search.isEmpty()) {
+
+                    flowerForTable = flowersService.searchFlowers(search);
+                    session.removeAttribute("flowerForTable");
+                    req.setAttribute("flowerForTable", flowerForTable);
+                } else if (priceMinInSearch != null && priceMaxInSearch != null) {
+
+                    req.setAttribute("priceMinInSearch", priceMinInSearch);
+                    req.setAttribute("priceMaxInSearch", priceMaxInSearch);
+
+                    flowerForTable = flowersService.searchMinAndMaxPrice(priceMinInSearch, priceMaxInSearch);
+                    session.removeAttribute("flowerForTable");
+                    req.setAttribute("flowerForTable", flowerForTable);
+                } else {
+
+                    flowerForTable = flowersService.flowerForTable();
+                    session.removeAttribute("flowerForTable");
+                    req.setAttribute("flowerForTable", flowerForTable);
+                }
+
                 // Customer table
                 List<Customer> usersForTable = customerDao.getAll();
                 req.setAttribute("usersTable", usersForTable);
-
-                // Flowers table
-                flowerForTable = flowersService.flowerForTable();
-                req.setAttribute("flowerForTable", flowerForTable);
 
                 if (!flowerForTable.isEmpty()) {
                     session.removeAttribute("flowerForTable");
