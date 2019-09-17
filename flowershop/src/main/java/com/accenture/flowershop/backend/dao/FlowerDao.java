@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -34,4 +35,23 @@ public class FlowerDao {
         entityManager.merge(flower);
         entityManager.flush();
     }
+
+    public List<Flower> searchOnName(String name) {
+        TypedQuery<Flower> q = entityManager.createQuery("select u from Flower u where u.name like :name ", Flower.class);
+        q.setParameter("name", name.toUpperCase() + "%");
+        return q.getResultList();
+    }
+
+
+    public List<Flower> searchMinAndMax(BigDecimal min, BigDecimal max) {
+        TypedQuery<Flower> q = entityManager.createQuery("select u from Flower u where u.price > :min and u.price < :max", Flower.class);
+        q.setParameter("min", min);
+        q.setParameter("max", max);
+        return q.getResultList();
+    }
+
+    public List<Flower> searchOnPrice() {
+        return null;
+    }
+
 }

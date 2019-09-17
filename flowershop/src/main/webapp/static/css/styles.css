@@ -45,11 +45,32 @@
   text-decoration: none;
 }
 
+/*
+ * Slider-range-price
+ */
+
+.slider-range-price_label {
+    margin: 0;
+    padding: 0;
+}
+
+.slider-range-price_label > span {
+    min-width: 20px;
+    text-align: center;
+    display: inline-block;
+}
+
+.slider-range-price__amount {
+    border: 0;
+    color: #dc3545;
+    font-weight: bold;
+    width: 30px;
+    text-align: center;
+}
 
 /*
  * Table
  */
-
 .table th, td {
     text-align: center;
     width: 310px;
@@ -59,6 +80,10 @@
     width: 80px;
     margin: 0 auto;
     text-align: center;
+}
+
+.price_table {
+    color: #dc3545;
 }
 
 /*

@@ -8,8 +8,18 @@
     User userData = (User) request.getAttribute("userData");
     ArrayList<Customer> usersTable = (ArrayList<Customer>) request.getAttribute("usersTable");
     ArrayList<Flower> flowerForTable = (ArrayList<Flower>) request.getAttribute("flowerForTable");
+
+    String priceMinInSearch = (String) request.getAttribute("priceMinInSearch");
+    String priceMaxInSearch = (String) request.getAttribute("priceMaxInSearch");
+
+    if (priceMinInSearch == null  &&  priceMaxInSearch == null) {
+        priceMinInSearch = "50";
+        priceMaxInSearch = "250";
+    }
 %>
 <% if (userData != null) { %>
+
+<script src="static/js/slider-range-price.js"></script>
 
 <div class="container" >
 
@@ -72,16 +82,32 @@
              <% } %>
         </div>
 
-        <div class="col-6 text-center mt-5">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <div class="input-group-text" id="btnGroupAddon">&#10059;</div>
-            </div>
-            <input type="text" name="search" class="form-control" placeholder="Search" aria-label="Input group example" aria-describedby="btnGroupAddon">
-          </div>
+        <div class="col-9 text-center mt-5">
+             <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text" id="btnGroupAddon">&#10059;</div>
+                </div>
+                <form id="search_form" method="GET" action="/main"></form>
+                <input form="search_form" type="text" name="search" class="form-control" placeholder="Search" aria-label="Input group example" aria-describedby="btnGroupAddon">
+             </div>
+             <div class="mt-2">
+                 <form method="GET" action="/main">
+                      <div class="text-center">
+                          <label for="amount" class="slider-range-price_label mb-2" >Ценовой диапозон:</label>
+                          <input name="amount_min" type="text" id="amount_min" class="slider-range-price__amount" value="<%= priceMinInSearch %>" readonly>
+                          <span> - </span>
+                          <input name="amount_max" type="text" id="amount_max" class="slider-range-price__amount" value="<%= priceMaxInSearch %>" readonly>
+                      </div>
+                      <div id="slider-range"></div>
+                      <div class="mt-2">
+                          <button type="submit" class="btn btn-danger mt-2">Поиск </button>
+                      </div>
+                 </form>
+             </div>
         </div>
+
         <% if(userData instanceof Customer) { %>
-            <div class="col-6 text-center mt-5">
+            <div class="col-3 text-center mt-5">
                 <button type="submit" form="orders" class="btn btn-danger">Оформить Заказ</button>
             </div>
         <% } %>
@@ -106,7 +132,7 @@
                     <tr>
                       <th scope="row"><%= flower.getId() %></th>
                       <td><%= flower.getName() %></td>
-                      <td><%= flower.getPrice() %></td>
+                      <td class="price_table"><%= flower.getPrice() %></td>
                       <td><%= flower.getAmount() %></td>
                       <td><%= flower.getImageUrl() %></td>
                       <% if(userData instanceof Customer) { %>
