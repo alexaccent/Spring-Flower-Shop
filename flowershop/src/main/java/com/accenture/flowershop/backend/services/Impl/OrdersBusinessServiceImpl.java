@@ -214,10 +214,6 @@ public class OrdersBusinessServiceImpl implements OrdersBusinessService {
                     orderById.setStatus(OrderStatus.CLOSED);
                     ordersDao.update(orderById);
                 }
-                // Fixed
-//                else {
-//                    throw new OrderCloseException("Не заказов для закрытия");
-//                }
             } else {
                 throw new OrderCloseException("Ошибка закыртия заказов");
             }
