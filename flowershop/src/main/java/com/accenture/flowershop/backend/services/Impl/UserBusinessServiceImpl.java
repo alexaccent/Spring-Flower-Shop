@@ -6,6 +6,7 @@ import com.accenture.flowershop.backend.dao.UserDao;
 import com.accenture.flowershop.backend.entity.Customer;
 import com.accenture.flowershop.backend.entity.User;
 import com.accenture.flowershop.backend.services.UserBusinessService;
+import com.accenture.flowershop.exception.UserLoginException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     @Override
-    public User register(String login, String password, String phone, String address) {
+    public User register(String login, String password, String phone, String address) throws UserLoginException  {
 
         if (customerDao.getOne(login) == null) {
 
@@ -55,7 +56,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
             return customer;
         } else {
-            return null;
+            throw new UserLoginException("Данный логин уже занят");
         }
     }
 

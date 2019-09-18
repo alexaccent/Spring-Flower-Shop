@@ -1,6 +1,7 @@
 package com.accenture.flowershop.backend.services;
 
 import com.accenture.flowershop.backend.entity.User;
+import com.accenture.flowershop.exception.UserLoginException;
 
 public interface UserBusinessService {
     /**
@@ -19,5 +20,5 @@ public interface UserBusinessService {
      * @param address
      * @return User
      */
-    User register(String login, String password, String phone,String address);
+    User register(String login, String password, String phone,String address) throws UserLoginException;
 }

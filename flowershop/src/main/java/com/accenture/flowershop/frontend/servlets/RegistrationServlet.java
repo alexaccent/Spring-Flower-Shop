@@ -3,6 +3,7 @@ package com.accenture.flowershop.frontend.servlets;
 import com.accenture.flowershop.backend.entity.Customer;
 import com.accenture.flowershop.backend.services.Impl.UserBusinessServiceImpl;
 import com.accenture.flowershop.backend.services.Impl.UserMarshgallingServiceImp;
+import com.accenture.flowershop.exception.UserLoginException;
 import com.accenture.flowershop.frontend.jms.MessagesJms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -57,14 +58,13 @@ public class RegistrationServlet extends HttpServlet {
         String nameJsp = "registration.jsp";
         if (login != null && !login.isEmpty() && password != null && !password.isEmpty() && phone != null && !phone.isEmpty() && address != null && !address.isEmpty()){
 
-            Customer returnUser = (Customer) userServicesRegistration.register(login, password, phone, address);
+            try {
 
-            if (returnUser != null) {
-
+                Customer returnUser = (Customer) userServicesRegistration.register(login, password, phone, address);
+                // create xml data users
                 String filepathXML = userMarshgallingService.getPath() + returnUser.getLogin() + ".xml";
 
                 userMarshgallingService.convertFromObjectToXML(returnUser, filepathXML);
-
                 String stringXml = userMarshgallingService.convertFromObjectToString(returnUser);
 
                 try {
@@ -74,13 +74,13 @@ public class RegistrationServlet extends HttpServlet {
                 }
 
                 resp.sendRedirect("/");
-            } else {
+            } catch (UserLoginException ex) {
 
-                String error = "Данный логин уже занят";
-                req.setAttribute("error", error);
+                req.setAttribute("error", ex.getMessage());
                 RequestDispatcher dispatcher = req.getRequestDispatcher(nameJsp);
                 dispatcher.forward(req, resp);
             }
+
         } else {
 
             String error = "Пожалуйста заполните все поля формы";
