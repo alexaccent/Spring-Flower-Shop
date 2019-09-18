@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="com.accenture.flowershop.backend.entity.*" %>
 <%@ page import="java.lang.String" %>
+<%@ page import="java.util.*" %>
 <%@ include file="layout/header.jsp" %>
 <%
     String error = (String) request.getAttribute("error");
@@ -41,6 +43,7 @@
                 <input type="password" name="password" class="form-control" id="password" placeholder="Password">
               </div>
               <button type="submit" id="button-reg" class="btn btn-primary" >Регистрация</button>
+              <a class="ml-5" href="/login">Войти</a>
             </form>
         </div>
     </div>

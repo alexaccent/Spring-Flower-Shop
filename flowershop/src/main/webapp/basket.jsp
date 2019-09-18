@@ -7,11 +7,9 @@
 <%@ page import="java.util.*" %>
 <%@ include file="layout/header.jsp" %>
 <%
-    Customer userData = (Customer) request.getAttribute("userData");
     Map<Flower, String> ordersInSessions = (HashMap<Flower, String>) request.getAttribute("ordersInSessions");
     Set<Orders> ordersByCreated = (HashSet<Orders>) request.getAttribute("ordersByCreated");
     Set<Orders> ordersByPaid = (HashSet<Orders>) request.getAttribute("ordersByPaid");
-
 
     String error = (String) request.getAttribute("error");
     String message = (String) request.getAttribute("message");

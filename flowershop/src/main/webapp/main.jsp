@@ -5,7 +5,6 @@
 <%@ page import="java.util.*" %>
 <%@ include file="layout/header.jsp" %>
 <%
-    User userData = (User) request.getAttribute("userData");
     ArrayList<Customer> usersTable = (ArrayList<Customer>) request.getAttribute("usersTable");
     ArrayList<Flower> flowerForTable = (ArrayList<Flower>) request.getAttribute("flowerForTable");
 
@@ -20,6 +19,7 @@
 <% if (userData != null) { %>
 
 <script src="static/js/slider-range-price.js"></script>
+<script src="static/js/main.js"></script>
 
 <div class="container" >
 

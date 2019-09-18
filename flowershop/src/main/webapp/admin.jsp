@@ -7,7 +7,6 @@
 <%@ page import="java.util.*" %>
 <%@ include file="layout/header.jsp" %>
 <%
-    Administrator userData = (Administrator) request.getAttribute("userData");
     List<Customer> usersList = (ArrayList<Customer>) request.getAttribute("usersList");
     List<Orders> ordersByPaid = (ArrayList<Orders>) request.getAttribute("ordersByPaid");
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -49,11 +48,13 @@
                 </tr>
               </thead>
               <tbody>
-              <% if (userData != null) { %>
+              <% if (userData instanceof Administrator) {
+                Administrator adminData = (Administrator) userData;
+              %>
                 <tr>
-                  <td><%= userData.getLogin() %></td>
-                  <td><%= userData.getAccessLevel() %></td>
-                  <td><%= userData.getPassword() %></td>
+                  <td><%= adminData.getLogin() %></td>
+                  <td><%= adminData.getAccessLevel() %></td>
+                  <td><%= adminData.getPassword() %></td>
                 </tr>
                <% } %>
               </tbody>

@@ -1,6 +1,7 @@
 package com.accenture.flowershop.frontend.servlets;
 
 import com.accenture.flowershop.backend.entity.Customer;
+import com.accenture.flowershop.backend.entity.User;
 import com.accenture.flowershop.backend.services.Impl.UserBusinessServiceImpl;
 import com.accenture.flowershop.backend.services.Impl.UserMarshgallingServiceImp;
 import com.accenture.flowershop.exception.UserLoginException;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.jms.JMSException;
+import javax.jms.Session;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -16,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.bind.Marshaller;
 import java.io.IOException;
 
@@ -41,6 +44,12 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        HttpSession session = req.getSession(false);
+        if (session != null) {
+            User userData = (User) session.getAttribute("user");
+            req.setAttribute("userData", userData);
+        }
+
         RequestDispatcher dispatcher = req.getRequestDispatcher("registration.jsp");
         dispatcher.forward(req, resp);
     }
@@ -56,6 +65,7 @@ public class RegistrationServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         String nameJsp = "registration.jsp";
+
         if (login != null && !login.isEmpty() && password != null && !password.isEmpty() && phone != null && !phone.isEmpty() && address != null && !address.isEmpty()){
 
             try {
