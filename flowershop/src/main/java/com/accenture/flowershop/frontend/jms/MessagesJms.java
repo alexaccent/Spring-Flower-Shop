@@ -3,16 +3,12 @@ package com.accenture.flowershop.frontend.jms;
 import com.accenture.flowershop.backend.entity.Customer;
 import com.accenture.flowershop.backend.services.Impl.UserBusinessServiceImpl;
 import com.accenture.flowershop.backend.services.Impl.UserMarshgallingServiceImp;
-import com.accenture.flowershop.frontend.servlets.LoginServlet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.jms.*;
 import java.io.IOException;
-import java.sql.SQLOutput;
 
 @Service
 public class MessagesJms {
@@ -31,8 +27,6 @@ public class MessagesJms {
 
     @Autowired
     private UserBusinessServiceImpl userService;
-
-    private static final Logger LOG = LoggerFactory.getLogger(MessagesJms.class);
 
     Session session;
     Connection connection;
@@ -53,8 +47,6 @@ public class MessagesJms {
 
                             String replyString = ((TextMessage) message).getText();
                             System.out.println("replyString: " + replyString);
-
-                            LOG.error("Error LOG");
 
                             Customer customerFromXML = (Customer) userMarshgallingService.convertFromStringXMLToObject(replyString);
                             userService.updateCustomerForJMS(customerFromXML);
