@@ -1,13 +1,8 @@
 package com.accenture.flowershop.frontend.rest;
 
 import com.accenture.flowershop.backend.dao.CustomerDao;
-import com.accenture.flowershop.backend.entity.Customer;
-import com.accenture.flowershop.backend.entity.Flower;
 import com.accenture.flowershop.backend.entity.User;
-import com.accenture.flowershop.backend.services.Impl.FlowersBusinessServiceImpl;
-import com.accenture.flowershop.exception.UserLoginException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.jws.WebParam;
