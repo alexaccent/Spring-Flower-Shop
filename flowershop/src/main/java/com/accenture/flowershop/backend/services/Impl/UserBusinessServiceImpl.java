@@ -60,12 +60,20 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     public void logout (HttpSession session) {
+
         session.removeAttribute("user");
         session.removeAttribute("ordersInSessions");
     }
 
-    public void updateCustomer(Customer customer){
+    public void updateCustomer(Customer customer) {
         customerDao.update(customer);
+    }
+
+    public void updateCustomerForJMS(Customer customer) {
+
+        Customer customerFromBd = customerDao.getOne(customer.getLogin());
+        customerFromBd.setDiscount(customer.getDiscount());
+        customerDao.update(customerFromBd);
     }
 
     public User updateUserSession(Customer userDataSession) {

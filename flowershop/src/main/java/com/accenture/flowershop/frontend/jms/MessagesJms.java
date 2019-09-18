@@ -3,12 +3,16 @@ package com.accenture.flowershop.frontend.jms;
 import com.accenture.flowershop.backend.entity.Customer;
 import com.accenture.flowershop.backend.services.Impl.UserBusinessServiceImpl;
 import com.accenture.flowershop.backend.services.Impl.UserMarshgallingServiceImp;
+import com.accenture.flowershop.frontend.servlets.LoginServlet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.jms.*;
 import java.io.IOException;
+import java.sql.SQLOutput;
 
 @Service
 public class MessagesJms {
@@ -28,31 +32,42 @@ public class MessagesJms {
     @Autowired
     private UserBusinessServiceImpl userService;
 
-    @PostConstruct
-    public void init() throws JMSException, IOException {
+    private static final Logger LOG = LoggerFactory.getLogger(MessagesJms.class);
 
-        Connection connection = connectionFactory.createConnection();
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+    Session session;
+    Connection connection;
+
+    @PostConstruct
+    public void init() throws JMSException {
 
         try {
+        connection = connectionFactory.createConnection();
+        session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+            MessageConsumer consumer = session.createConsumer(inQueue);
             connection.start();
+            consumer.setMessageListener(
+                new MessageListener() {
+                    public void onMessage(Message message) {
+                        try {
 
-            MessageConsumer consumer  = session.createConsumer(inQueue);
+                            String replyString = ((TextMessage) message).getText();
+                            System.out.println("replyString: " + replyString);
 
-            TextMessage message = (TextMessage) consumer.receive();
-            String replyString = message.getText();
+                            LOG.error("Error LOG");
 
-            if (replyString != null && !replyString.isEmpty()) {
+                            Customer customerFromXML = (Customer) userMarshgallingService.convertFromStringXMLToObject(replyString);
+                            userService.updateCustomerForJMS(customerFromXML);
 
-                Customer customerFromXML = (Customer) userMarshgallingService.convertFromStringXMLToObject(replyString);
-                userService.updateCustomer(customerFromXML);
-            }
+                        } catch (JMSException | IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            );
 
         } catch (Exception ex) {
-            throw ex;
-        } finally {
-            session.close();
-            connection.close();
+            ex.printStackTrace();
         }
     }
 
