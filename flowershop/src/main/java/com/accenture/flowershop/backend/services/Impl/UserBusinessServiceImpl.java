@@ -26,17 +26,16 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     private UserDao userDao;
 
     @Override
-    public User login(String login, String password) {
+    public User login(String login, String password) throws UserLoginException {
 
         User userLogin = userDao.getOne(login);
 
-        if (userLogin != null) {
-            if (userLogin.getPassword().equals(password)){
-                return userLogin;
-            }
-        }
+        if (userLogin != null && userLogin.getPassword().equals(password)) {
 
-        return null;
+            return userLogin;
+        } else {
+            throw new UserLoginException("Вы ввели не верный логин или пароль");
+        }
     }
 
     @Override
@@ -78,6 +77,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     public User updateUserSession(Customer userDataSession) {
+
         Customer userUpdateSession = customerDao.getOne(userDataSession.getLogin());
         return userUpdateSession;
     }

@@ -10,7 +10,7 @@ public interface UserBusinessService {
      * @param password
      * @return User
      */
-    User login(String login, String password);
+    User login(String login, String password) throws UserLoginException;
 
     /**
      * Registration user. Save data user to Bd
