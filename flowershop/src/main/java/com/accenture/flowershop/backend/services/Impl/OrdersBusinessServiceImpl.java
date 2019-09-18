@@ -103,48 +103,53 @@ public class OrdersBusinessServiceImpl implements OrdersBusinessService {
 
         if (customerBD.getOrders().contains(orders)) {
 
-            Set<FlowerOrder> flowerOrdersSet =  orders.getFlowerOrders();
+            if (orders.getStatus().equals(OrderStatus.CREATED)) {
 
-            //User balance
-            userData.getBalance().compareTo(orders.getPrice());
+                Set<FlowerOrder> flowerOrdersSet =  orders.getFlowerOrders();
 
-            for (FlowerOrder flowerOrderOne : flowerOrdersSet) {
+                //User balance
+                userData.getBalance().compareTo(orders.getPrice());
 
-                Flower flowerById = flowerOrderOne.getFlowerId();
-
-                if (flowerById.getAmount().compareTo(flowerOrderOne.getAmountFlowers()) == -1) {
-                    throw new OrderPaymentException("Такого колличества цветов в данный момент нет");
-                }
-            }
-
-            if (userData.getBalance().compareTo(orders.getDiscountPrice()) == -1) {
-                throw new OrderPaymentException("На вашем счете недостаточно средств");
-            }
-
-            // Payment
-            try {
                 for (FlowerOrder flowerOrderOne : flowerOrdersSet) {
-                    Flower flowerById = flowerOrderOne.getFlowerId();
-                    Long newAmount = flowerById.getAmount() - flowerOrderOne.getAmountFlowers();
 
-                    flowerById.setAmount(newAmount);
-                    flowerDao.update(flowerById);
+                    Flower flowerById = flowerOrderOne.getFlowerId();
+
+                    if (flowerById.getAmount().compareTo(flowerOrderOne.getAmountFlowers()) == -1) {
+                        throw new OrderPaymentException("Такого колличества цветов в данный момент нет");
+                    }
                 }
 
-                BigDecimal newBalance = userData.getBalance().subtract(orders.getDiscountPrice());
-                userData.setBalance(newBalance.setScale(2, RoundingMode.CEILING));
+                if (userData.getBalance().compareTo(orders.getDiscountPrice()) == -1) {
+                    throw new OrderPaymentException("На вашем счете недостаточно средств");
+                }
 
-                orders.setStatus(OrderStatus.PAID);
-                orders.setFlowerOrders(flowerOrdersSet);
-                orders.setOrdersDate(new Date());
+                // Payment
+                try {
+                    for (FlowerOrder flowerOrderOne : flowerOrdersSet) {
+                        Flower flowerById = flowerOrderOne.getFlowerId();
+                        Long newAmount = flowerById.getAmount() - flowerOrderOne.getAmountFlowers();
 
-                customerDao.update(userData);
-                ordersDao.update(orders);
+                        flowerById.setAmount(newAmount);
+                        flowerDao.update(flowerById);
+                    }
 
-                return orders;
+                    BigDecimal newBalance = userData.getBalance().subtract(orders.getDiscountPrice());
+                    userData.setBalance(newBalance.setScale(2, RoundingMode.CEILING));
 
-            } catch (Exception ex) {
-                throw new OrderPaymentException("Ошибка оплаты заказа");
+                    orders.setStatus(OrderStatus.PAID);
+                    orders.setFlowerOrders(flowerOrdersSet);
+                    orders.setOrdersDate(new Date());
+
+                    customerDao.update(userData);
+                    ordersDao.update(orders);
+
+                    return orders;
+
+                } catch (Exception ex) {
+                    throw new OrderPaymentException("Ошибка оплаты заказа");
+                }
+            } else {
+                throw new OrderPaymentException("Данный заказ был оплачен");
             }
         } else {
             throw new OrderPaymentException("Неудалось найти заказ");
@@ -208,9 +213,11 @@ public class OrdersBusinessServiceImpl implements OrdersBusinessService {
                 if (orderById.getStatus().equals(OrderStatus.PAID)) {
                     orderById.setStatus(OrderStatus.CLOSED);
                     ordersDao.update(orderById);
-                } else {
-                    throw new OrderCloseException("Не заказов для закрытия");
                 }
+                // Fixed
+//                else {
+//                    throw new OrderCloseException("Не заказов для закрытия");
+//                }
             } else {
                 throw new OrderCloseException("Ошибка закыртия заказов");
             }
