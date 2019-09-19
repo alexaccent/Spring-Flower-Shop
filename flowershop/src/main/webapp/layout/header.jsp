@@ -15,8 +15,9 @@
 
     <script src="static/js/lib/jquery-3.4.1.min.js"></script>
 
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="static/js/lib/jquery.mask.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body class="d-flex flex-column h-100">
 <main class="flex-shrink-0">
@@ -25,16 +26,20 @@
 
         <a class="py-3 d-none d-md-inline-block logo" href="/main">Spring Flower Shop</a>
 
+        <% if (userData != null) { %>
+            <a class="py-3 d-none d-md-inline-block" href="/main">Главная</a>
+        <% } %>
+
         <% if (userData != null && userData instanceof Administrator) { %>
             <a class="py-3 d-none d-md-inline-block " href="/admin">Админ панель</a>
         <% } %>
 
-        <% if (userData != null) { %>
-            <a class="py-3 d-none d-md-inline-block" href="/registration">Добавить пользователя</a>
-        <% } %>
-
         <% if (userData != null && userData instanceof Customer) { %>
             <a class="py-3 d-none d-md-inline-block " href="/basket">Страница заказов</a>
+        <% } %>
+
+        <% if (userData != null) { %>
+            <a class="py-3 d-none d-md-inline-block" href="/registration">Добавить пользователя</a>
         <% } %>
 
         <% if (userData != null) { %>

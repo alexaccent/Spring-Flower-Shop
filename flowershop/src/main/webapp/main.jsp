@@ -108,7 +108,7 @@
 
         <% if(userData instanceof Customer) { %>
             <div class="col-3 text-center mt-5">
-                <button type="submit" form="orders" class="btn btn-danger">Оформить Заказ</button>
+                <button type="submit" form="orders" class="btn btn-danger">Добавить в корзину</button>
             </div>
         <% } %>
         <div class="col-12 mb-5">
