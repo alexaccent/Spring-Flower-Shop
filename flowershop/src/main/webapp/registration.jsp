@@ -43,7 +43,11 @@
                 <input type="password" name="password" class="form-control" id="password" placeholder="Password">
               </div>
               <button type="submit" id="button-reg" class="btn btn-primary" >Регистрация</button>
-              <a class="ml-5" href="/login">Войти</a>
+
+              <% if (userData == null) { %>
+                <a class="ml-5" href="/login">Войти</a>
+              <% } %>
+
             </form>
         </div>
     </div>
