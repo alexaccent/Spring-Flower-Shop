@@ -65,8 +65,8 @@ public class MessagesJms {
 
     public void outMessages(String stringXml) throws JMSException {
 
-        Connection connection = connectionFactory.createConnection();
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        connection = connectionFactory.createConnection();
+        session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
         try {
             connection.start();
@@ -81,8 +81,12 @@ public class MessagesJms {
             session.close();
             connection.close();
         }
-
     }
 
+    public void finalize() throws JMSException {
+
+        session.close();
+        connection.close();
+    }
 
 }
