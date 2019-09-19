@@ -194,6 +194,7 @@ public class OrdersBusinessServiceImpl implements OrdersBusinessService {
         if (orderById != null && orderById.getStatus().equals(OrderStatus.PAID)) {
 
             orderById.setStatus(OrderStatus.CLOSED);
+            orderById.setOrdersCloseDate(new Date());
             ordersDao.update(orderById);
         } else {
             throw new OrderCloseException("Ошибка закыртия заказа");
@@ -211,7 +212,9 @@ public class OrdersBusinessServiceImpl implements OrdersBusinessService {
             if (orderById != null) {
 
                 if (orderById.getStatus().equals(OrderStatus.PAID)) {
+
                     orderById.setStatus(OrderStatus.CLOSED);
+                    orderById.setOrdersCloseDate(new Date());
                     ordersDao.update(orderById);
                 }
             } else {

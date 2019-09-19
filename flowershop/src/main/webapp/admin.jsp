@@ -77,6 +77,7 @@
                       <th scope="col">Discount price</th>
                       <th scope="col">Price</th>
                       <th scope="col">Date</th>
+                      <th scope="col">Close Date</th>
                       <th scope="col">Act</th>
                     </tr>
                   </thead>
@@ -89,6 +90,11 @@
                       <td class="align-middle"><%= orderOne.getDiscountPrice() %></td>
                       <td class="align-middle"><%= orderOne.getPrice() %></td>
                       <td class="align-middle"><%= dateFormat.format(orderOne.getOrdersDate()) %></td>
+                      <td class="align-middle">
+                        <% if (orderOne.getOrdersCloseDate() != null) { %>
+                           <%= dateFormat.format(orderOne.getOrdersCloseDate()) %>
+                        <% } %>
+                      </td>
                       <td class="align-middle">
                       <input type="hidden" name="order_id" value='<%= orderOne.getId() %>' form="orders">
                       <% if (orderOne.getStatus().equals(OrderStatus.PAID)) { %>
