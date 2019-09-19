@@ -36,6 +36,10 @@ public class Orders {
     @Column(name="ORDERS_DATE")
     private Date ordersDate;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="ORDERS_CLOSE_DATE")
+    private Date ordersCloseDate;
+
     @OneToMany(mappedBy="ordersId", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<FlowerOrder> flowerOrders = new HashSet<>();
 
@@ -104,6 +108,13 @@ public class Orders {
         this.flowerOrders = flowerOrders;
     }
 
+    public Date getOrdersCloseDate() {
+        return ordersCloseDate;
+    }
+
+    public void setOrdersCloseDate(Date ordersCloseDate) {
+        this.ordersCloseDate = ordersCloseDate;
+    }
 
     @Override
     public boolean equals(Object o) {

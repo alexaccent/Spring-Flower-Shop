@@ -11,6 +11,11 @@ public class FlowersStockWebServiceClientImpl implements FlowersStockWebServiceC
 
     @WebServiceRef(wsdlLocation="http://localhost:8080/ws/FlowersStockWebService?wsdl")
     public void autoIncrement() {
-        service.increaseFlowersStockSize(6);
+
+        int start = 10;
+        int end = 30;
+        int randomNumber = start + (int) (Math.random() * end);
+
+        service.increaseFlowersStockSize(randomNumber);
     }
 }

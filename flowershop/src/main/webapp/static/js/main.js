@@ -27,4 +27,22 @@ $(document).ready(function() {
             },
         });
     });
+
+    $("input[name$='check_password']").keyup(function () {
+        var passwordVal = $("input[name$='password']").val();
+
+        if ($(this).val() != passwordVal) {
+
+            $(this).addClass("red-input");
+            $("#button-reg").prop("disabled", true);
+
+        } else {
+
+            $(this).removeClass("red-input");
+            $("#button-reg").prop("disabled", false);
+        }
+    });
+
+    $("input[name$='phone']").mask('+7 (000) 000-0000');
+
 });

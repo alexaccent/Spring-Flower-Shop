@@ -7,7 +7,6 @@
 <%@ page import="java.util.*" %>
 <%@ include file="layout/header.jsp" %>
 <%
-    Administrator userData = (Administrator) request.getAttribute("userData");
     List<Customer> usersList = (ArrayList<Customer>) request.getAttribute("usersList");
     List<Orders> ordersByPaid = (ArrayList<Orders>) request.getAttribute("ordersByPaid");
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -49,11 +48,13 @@
                 </tr>
               </thead>
               <tbody>
-              <% if (userData != null) { %>
+              <% if (userData instanceof Administrator) {
+                Administrator adminData = (Administrator) userData;
+              %>
                 <tr>
-                  <td><%= userData.getLogin() %></td>
-                  <td><%= userData.getAccessLevel() %></td>
-                  <td><%= userData.getPassword() %></td>
+                  <td><%= adminData.getLogin() %></td>
+                  <td><%= adminData.getAccessLevel() %></td>
+                  <td><%= adminData.getPassword() %></td>
                 </tr>
                <% } %>
               </tbody>
@@ -76,6 +77,7 @@
                       <th scope="col">Discount price</th>
                       <th scope="col">Price</th>
                       <th scope="col">Date</th>
+                      <th scope="col">Close Date</th>
                       <th scope="col">Act</th>
                     </tr>
                   </thead>
@@ -88,6 +90,11 @@
                       <td class="align-middle"><%= orderOne.getDiscountPrice() %></td>
                       <td class="align-middle"><%= orderOne.getPrice() %></td>
                       <td class="align-middle"><%= dateFormat.format(orderOne.getOrdersDate()) %></td>
+                      <td class="align-middle">
+                        <% if (orderOne.getOrdersCloseDate() != null) { %>
+                           <%= dateFormat.format(orderOne.getOrdersCloseDate()) %>
+                        <% } %>
+                      </td>
                       <td class="align-middle">
                       <input type="hidden" name="order_id" value='<%= orderOne.getId() %>' form="orders">
                       <% if (orderOne.getStatus().equals(OrderStatus.PAID)) { %>

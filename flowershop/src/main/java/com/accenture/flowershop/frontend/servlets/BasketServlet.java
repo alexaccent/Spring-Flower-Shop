@@ -71,22 +71,16 @@ public class BasketServlet  extends HttpServlet {
 
                     // Created orders
                     ordersByCreated = ordersService.getOrdersByStatusToUser(userData, OrderStatus.CREATED);
-
                     if (ordersByCreated != null && !ordersByCreated.isEmpty()) {
                         req.setAttribute("ordersByCreated", ordersByCreated);
                     }
 
                     // Paid orders
                     Set<Orders> ordersByPaid = ordersService.getOrdersByStatusToUser(userData, OrderStatus.PAID);
-
+                    Set<Orders> ordersByClosed = ordersService.getOrdersByStatusToUser(userData, OrderStatus.CLOSED);
+                    ordersByPaid.addAll(ordersByClosed);
                     if (ordersByPaid != null && !ordersByPaid.isEmpty()) {
                         req.setAttribute("ordersByPaid", ordersByPaid);
-                    }
-
-                    Set<Orders> ordersCreated = userData.getOrders();
-
-                    if (ordersCreated != null && !ordersCreated.isEmpty()) {
-                        req.setAttribute("ordersCreated", ordersCreated);
                     }
 
                     RequestDispatcher dispatcher = req.getRequestDispatcher("basket.jsp");
@@ -97,7 +91,6 @@ public class BasketServlet  extends HttpServlet {
             } else {
                 resp.sendRedirect("/main");
             }
-
         } else {
             resp.sendRedirect("/login");
         }
@@ -123,9 +116,6 @@ public class BasketServlet  extends HttpServlet {
 
                         session.removeAttribute("ordersInSessions");
                         session.removeAttribute("ordersByCreated");
-
-                        Set<Orders> ordersCreatedNew = ordersService.getOrdersByStatusToUser(userData, OrderStatus.CREATED);
-                        req.setAttribute("ordersCreated", ordersCreatedNew);
                     }
                 }
 
@@ -139,13 +129,12 @@ public class BasketServlet  extends HttpServlet {
                         try {
                             ordersService.payOrders(userData, ordersId);
 
-                            session.removeAttribute("ordersCreated");
-                            Set<Orders> ordersCreatedUpdate = ordersService.getOrdersByStatusToUser(userData, OrderStatus.CREATED);
-                            req.setAttribute("ordersCreated", ordersCreatedUpdate);
-
                             session.removeAttribute("ordersByPaid");
                             Set<Orders> ordersByPaidNew = ordersService.getOrdersByStatusToUser(userData, OrderStatus.PAID);
-                            req.setAttribute("ordersByPaid", ordersByPaidNew);
+                            Set<Orders> ordersByClosed = ordersService.getOrdersByStatusToUser(userData, OrderStatus.CLOSED);
+
+                            ordersByPaidNew.addAll(ordersByClosed);
+                            req.setAttribute("ordersByPaid", ordersByClosed);
 
                             String message = "Ваш заказ успешно оплачен";
                             req.setAttribute("message", message);
@@ -153,14 +142,6 @@ public class BasketServlet  extends HttpServlet {
                             req.setAttribute("error", ex.getMessage());
                         }
                     }
-                }
-
-                // Logout
-                String logout = req.getParameter("logout");
-                if (logout != null && !logout.isEmpty() ) {
-                    HttpSession session = req.getSession(false);
-                    userService.logout(session);
-                    resp.sendRedirect("/login");
                 }
             }
 

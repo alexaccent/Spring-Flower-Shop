@@ -7,11 +7,9 @@
 <%@ page import="java.util.*" %>
 <%@ include file="layout/header.jsp" %>
 <%
-    Customer userData = (Customer) request.getAttribute("userData");
     Map<Flower, String> ordersInSessions = (HashMap<Flower, String>) request.getAttribute("ordersInSessions");
     Set<Orders> ordersByCreated = (HashSet<Orders>) request.getAttribute("ordersByCreated");
     Set<Orders> ordersByPaid = (HashSet<Orders>) request.getAttribute("ordersByPaid");
-
 
     String error = (String) request.getAttribute("error");
     String message = (String) request.getAttribute("message");
@@ -20,7 +18,7 @@
 <div class="container" >
     <div class="row justify-content-center align-items-center">
         <div class="text-center col-12">
-            <p class="h1 mb-3">Orders</span></p>
+            <p class="h1 mb-3">Заказы</span></p>
             <% if (error != null && !error.isEmpty()) { %>
                 <div class="alert alert-danger col-6 mx-auto">
                   <%
@@ -39,7 +37,7 @@
             <% } %>
         </div>
         <div class="col-12 mb-4">
-        <p class="text-center h4 text-secondary mb-3">List of not created orders</p>
+        <p class="text-center h4 text-secondary mb-3">Список заказов в корзине</p>
         <% if(ordersInSessions != null && !ordersInSessions.isEmpty()) { %>
             <table class="table">
               <thead class="thead-dark">
@@ -71,14 +69,14 @@
             </form>
              <% } else { %>
                  <div class="text-center">
-                    <p>No orders for registration =(</p>
+                    <p>Нет заказов в корзине</p>
                  </div>
              <% } %>
         </div>
 
         <!-- Created -->
         <div class="col-12 mb-5">
-            <p class="text-center text-primary h4 mb-3">Orders for pay</p>
+            <p class="text-center text-primary h4 mb-3">Заказы ожидающие оплаты</p>
 
             <% if(ordersByCreated != null && !ordersByCreated.isEmpty()) { %>
                 <% for (Orders orderOne : ordersByCreated) { %>
@@ -174,7 +172,7 @@
                 <% } %>
              <% } else { %>
                  <div class="text-center">
-                    <p>No orders created</p>
+                    <p>Нет оплаченных заказов</p>
                  </div>
              <% } %>
         </div>

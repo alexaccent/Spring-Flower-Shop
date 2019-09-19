@@ -5,7 +5,6 @@
 <%@ page import="java.util.*" %>
 <%@ include file="layout/header.jsp" %>
 <%
-    User userData = (User) request.getAttribute("userData");
     ArrayList<Customer> usersTable = (ArrayList<Customer>) request.getAttribute("usersTable");
     ArrayList<Flower> flowerForTable = (ArrayList<Flower>) request.getAttribute("flowerForTable");
 
@@ -20,6 +19,7 @@
 <% if (userData != null) { %>
 
 <script src="static/js/slider-range-price.js"></script>
+<script src="static/js/main.js"></script>
 
 <div class="container" >
 
@@ -108,7 +108,7 @@
 
         <% if(userData instanceof Customer) { %>
             <div class="col-3 text-center mt-5">
-                <button type="submit" form="orders" class="btn btn-danger">Оформить Заказ</button>
+                <button type="submit" form="orders" class="btn btn-danger">Добавить в корзину</button>
             </div>
         <% } %>
         <div class="col-12 mb-5">

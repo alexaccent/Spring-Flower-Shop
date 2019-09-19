@@ -28,38 +28,45 @@ public class MessagesJms {
     @Autowired
     private UserBusinessServiceImpl userService;
 
-    @PostConstruct
-    public void init() throws JMSException, IOException {
+    Session session;
+    Connection connection;
 
-        Connection connection = connectionFactory.createConnection();
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+    @PostConstruct
+    public void init() throws JMSException {
 
         try {
+        connection = connectionFactory.createConnection();
+        session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+            MessageConsumer consumer = session.createConsumer(inQueue);
             connection.start();
+            consumer.setMessageListener(
+                new MessageListener() {
+                    public void onMessage(Message message) {
+                        try {
 
-            MessageConsumer consumer  = session.createConsumer(inQueue);
+                            String replyString = ((TextMessage) message).getText();
+                            System.out.println("replyString: " + replyString);
 
-            TextMessage message = (TextMessage) consumer.receive();
-            String replyString = message.getText();
+                            Customer customerFromXML = (Customer) userMarshgallingService.convertFromStringXMLToObject(replyString);
+                            userService.updateCustomerForJMS(customerFromXML);
 
-            if (replyString != null && !replyString.isEmpty()) {
-
-                Customer customerFromXML = (Customer) userMarshgallingService.convertFromStringXMLToObject(replyString);
-                userService.updateCustomer(customerFromXML);
-            }
+                        } catch (JMSException | IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            );
 
         } catch (Exception ex) {
-            throw ex;
-        } finally {
-            session.close();
-            connection.close();
+            ex.printStackTrace();
         }
     }
 
     public void outMessages(String stringXml) throws JMSException {
 
-        Connection connection = connectionFactory.createConnection();
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        connection = connectionFactory.createConnection();
+        session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
         try {
             connection.start();
@@ -74,8 +81,12 @@ public class MessagesJms {
             session.close();
             connection.close();
         }
-
     }
 
+    public void finalize() throws JMSException {
+
+        session.close();
+        connection.close();
+    }
 
 }

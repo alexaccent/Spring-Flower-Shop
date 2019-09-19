@@ -1,8 +1,8 @@
 package com.accenture.flowershop.frontend.servlets;
 import com.accenture.flowershop.backend.entity.Administrator;
-import com.accenture.flowershop.backend.entity.Customer;
 import com.accenture.flowershop.backend.entity.User;
 import com.accenture.flowershop.backend.services.Impl.UserBusinessServiceImpl;
+import com.accenture.flowershop.exception.UserLoginException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -49,11 +49,11 @@ public class LoginServlet extends HttpServlet {
 
         if (login != null && !login.isEmpty() && password != null && !password.isEmpty() ) {
 
-            User userData =  userServicesLogin.login(login, password);
+            try {
 
-            if (userData != null) {
+                User userData = userServicesLogin.login(login, password);
+
                 HttpSession session = req.getSession(true);
-
                 session.setAttribute("user", userData);
                 session.setMaxInactiveInterval(30*60);
 
@@ -63,13 +63,13 @@ public class LoginServlet extends HttpServlet {
                     resp.sendRedirect("/main");
                 }
 
-            } else {
-                String error = "Вы ввели не верный логин или пароль";
-                req.setAttribute("error", error);
+            } catch (UserLoginException ex) {
 
+                req.setAttribute("error", ex.getMessage());
                 RequestDispatcher dispatcher = req.getRequestDispatcher(nameJsp);
                 dispatcher.forward(req, resp);
             }
+
         } else {
             String error = "Не все поля заполнены";
             req.setAttribute("error", error);
