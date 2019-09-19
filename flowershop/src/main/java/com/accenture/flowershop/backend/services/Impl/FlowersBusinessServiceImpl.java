@@ -35,7 +35,7 @@ public class FlowersBusinessServiceImpl implements FlowersBusinessService {
 
     public List<Flower> searchFlowers(String name) {
 
-        // Fixed
+        name = name.substring(0, 1).toUpperCase() + name.substring(1);
         return flowerDao.searchOnName(name);
     }
 

@@ -38,7 +38,7 @@ public class FlowerDao {
 
     public List<Flower> searchOnName(String name) {
         TypedQuery<Flower> q = entityManager.createQuery("select u from Flower u where u.name like :name ", Flower.class);
-        q.setParameter("name", name.toUpperCase() + "%");
+        q.setParameter("name", name + "%");
         return q.getResultList();
     }
 
