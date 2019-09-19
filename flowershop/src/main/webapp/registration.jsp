@@ -42,7 +42,7 @@
                 <label for="password">Пароль</label>
                 <input type="password" name="password" class="form-control" id="password" placeholder="Password">
               </div>
-              <div class="form-group">
+              <div class="form-group mb-4">
                 <label for="password">Повторите пароль</label>
                 <input type="password" name="check_password" class="form-control" id="check_password" placeholder="Password">
               </div>
