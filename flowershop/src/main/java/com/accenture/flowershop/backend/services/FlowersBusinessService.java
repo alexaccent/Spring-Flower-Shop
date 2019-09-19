@@ -9,7 +9,7 @@ public interface FlowersBusinessService {
      * Get all flowers for Table
      * @return List<Flower>
      */
-    List<Flower> flowerForTable();
+    List<Flower> getAllFlowers();
 
     /**
      * Add amount flowers

@@ -15,7 +15,7 @@ public class FlowersBusinessServiceImpl implements FlowersBusinessService {
     @Autowired
     private FlowerDao flowerDao;
 
-    public List<Flower> flowerForTable() {
+    public List<Flower> getAllFlowers() {
         return  flowerDao.getAll();
     }
 

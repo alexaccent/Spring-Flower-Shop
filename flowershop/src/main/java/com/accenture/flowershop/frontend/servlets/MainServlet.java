@@ -69,7 +69,7 @@ public class MainServlet extends HttpServlet {
                     req.setAttribute("flowerForTable", flowerForTable);
                 } else {
 
-                    flowerForTable = flowersService.flowerForTable();
+                    flowerForTable = flowersService.getAllFlowers();
                     session.removeAttribute("flowerForTable");
                     req.setAttribute("flowerForTable", flowerForTable);
                 }
