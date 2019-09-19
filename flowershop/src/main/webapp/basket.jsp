@@ -76,7 +76,7 @@
 
         <!-- Created -->
         <div class="col-12 mb-5">
-            <p class="text-center text-primary h4 mb-3">Заказы для оплаты</p>
+            <p class="text-center text-primary h4 mb-3">Заказы ожидающие оплаты</p>
 
             <% if(ordersByCreated != null && !ordersByCreated.isEmpty()) { %>
                 <% for (Orders orderOne : ordersByCreated) { %>

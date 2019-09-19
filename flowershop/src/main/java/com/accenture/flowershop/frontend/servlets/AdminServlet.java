@@ -1,8 +1,8 @@
 package com.accenture.flowershop.frontend.servlets;
 
-import com.accenture.flowershop.backend.dao.CustomerDao;
 import com.accenture.flowershop.backend.entity.*;
 import com.accenture.flowershop.backend.services.Impl.OrdersBusinessServiceImpl;
+import com.accenture.flowershop.backend.services.Impl.UserBusinessServiceImpl;
 import com.accenture.flowershop.exception.OrderCloseException;
 import com.accenture.flowershop.enums.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,8 @@ import java.util.List;
 @WebServlet(urlPatterns = "/admin")
 public class AdminServlet extends HttpServlet {
 
-    // temp
     @Autowired
-    private CustomerDao customerDao;
+    private UserBusinessServiceImpl userService;
 
     @Autowired
     private OrdersBusinessServiceImpl ordersService;
@@ -54,7 +53,7 @@ public class AdminServlet extends HttpServlet {
                     req.setAttribute("userData", userData);
 
                     // Customer table
-                    List<Customer> usersList = customerDao.getAll();
+                    List<Customer> usersList = userService.getListForTable();
                     req.setAttribute("usersList", usersList);
 
                     // Orders table

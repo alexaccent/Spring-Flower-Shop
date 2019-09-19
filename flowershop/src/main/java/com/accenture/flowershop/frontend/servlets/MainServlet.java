@@ -1,10 +1,8 @@
 package com.accenture.flowershop.frontend.servlets;
 
-
-import com.accenture.flowershop.backend.dao.CustomerDao;
-import com.accenture.flowershop.backend.dao.FlowerDao;
 import com.accenture.flowershop.backend.entity.*;
 import com.accenture.flowershop.backend.services.Impl.FlowersBusinessServiceImpl;
+import com.accenture.flowershop.backend.services.Impl.UserBusinessServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -23,7 +21,7 @@ import java.util.List;
 public class MainServlet extends HttpServlet {
 
     @Autowired
-    private CustomerDao customerDao;
+    private UserBusinessServiceImpl userService;
 
     @Autowired
     private FlowersBusinessServiceImpl flowersService;
@@ -77,7 +75,7 @@ public class MainServlet extends HttpServlet {
                 }
 
                 // Customer table
-                List<Customer> usersForTable = customerDao.getAll();
+                List<Customer> usersForTable = userService.getListForTable();
                 req.setAttribute("usersTable", usersForTable);
 
                 if (!flowerForTable.isEmpty()) {

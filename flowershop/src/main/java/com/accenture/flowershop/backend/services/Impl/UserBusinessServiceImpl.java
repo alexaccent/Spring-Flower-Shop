@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class UserBusinessServiceImpl implements UserBusinessService {
@@ -80,6 +81,11 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
         Customer userUpdateSession = customerDao.getOne(userDataSession.getLogin());
         return userUpdateSession;
+    }
+
+    public List<Customer> getListForTable() {
+
+        return customerDao.getAll();
     }
 
 }
