@@ -16,11 +16,7 @@ public class FlowersStockWebServiceImpl implements FlowersStockWebService {
     @Override
     public void increaseFlowersStockSize(@WebParam(name = "count")  int count) {
 
-        long start = 0;
-        long end = 10;
-        long randomNumber = start + (long) (Math.random() * end);
-        flowersService.updateFlowersAmount(randomNumber);
-
-        System.out.println("increase FlowersStockSize/ randomNumber: " + randomNumber);
+        flowersService.updateFlowersAmount(count);
+        System.out.println("increase FlowersStockSize/ randomNumber: " + count);
     }
 }
