@@ -74,7 +74,7 @@
                     <tr>
                       <td><%= flowerOne.getId() %></td>
                       <td><%= flowerOne.getName() %></td>
-                      <td><%= flowerOne.getPrice() %></td>
+                      <td><%= flowerOrderOne.getPrice() %></td>
                       <td><%= flowerOne.getImageUrl() %></td>
                       <td><%= flowerOrderOne.getAmountFlowers() %></td>
                     </tr>
