@@ -7,9 +7,14 @@
 <%@ page import="java.util.*" %>
 <%@ include file="layout/header.jsp" %>
 <%
-    Map<Flower, String> ordersInSessions = (HashMap<Flower, String>) request.getAttribute("ordersInSessions");
+
     Set<Orders> ordersByCreated = (HashSet<Orders>) request.getAttribute("ordersByCreated");
     Set<Orders> ordersByPaid = (HashSet<Orders>) request.getAttribute("ordersByPaid");
+
+    // New code
+    Orders ordersInBasket = (Orders) request.getAttribute("ordersInBasket");
+    Set<FlowerOrder> flowerOrdersBasket = (HashSet<FlowerOrder>) request.getAttribute("flowerOrdersBasket");
+
 
     String error = (String) request.getAttribute("error");
     String message = (String) request.getAttribute("message");
@@ -36,9 +41,22 @@
                 </div>
             <% } %>
         </div>
+
+        <!-- Basket -->
         <div class="col-12 mb-4">
         <p class="text-center h4 text-secondary mb-3">Список заказов в корзине</p>
-        <% if(ordersInSessions != null && !ordersInSessions.isEmpty()) { %>
+        <% if (ordersInBasket != null && flowerOrdersBasket != null) { %>
+
+            <div class="row">
+                <div class="col-12">
+                    Стоимость заказа: <span class="text-danger"><%= ordersInBasket.getPrice() %></span> рублей.
+                    <% if(ordersInBasket.getPrice().compareTo(ordersInBasket.getDiscountPrice()) != 0) { %>
+                        <p>Стоимость заказа с учетом скидки: <span class="text-danger">
+                            <%= ordersInBasket.getDiscountPrice() %></span> рублей.
+                        </p>
+                    <% } %>
+                </div>
+            </div>
             <table class="table">
               <thead class="thead-dark">
                 <tr>
@@ -50,16 +68,15 @@
                 </tr>
               </thead>
               <tbody>
-                  <% for (Map.Entry<Flower, String> order : ordersInSessions.entrySet()) {
-                        Flower keyFlower = order.getKey();
-                        String amountFlower = order.getValue();
+                  <% for (FlowerOrder flowerOrderOne : flowerOrdersBasket) {
+                        Flower flowerOne = flowerOrderOne.getFlowerId();
                   %>
                     <tr>
-                      <td><%= keyFlower.getId() %></td>
-                      <td><%= keyFlower.getName() %></td>
-                      <td><%= keyFlower.getPrice() %></td>
-                      <td><%= keyFlower.getImageUrl() %></td>
-                      <td><%= amountFlower %></td>
+                      <td><%= flowerOne.getId() %></td>
+                      <td><%= flowerOne.getName() %></td>
+                      <td><%= flowerOne.getPrice() %></td>
+                      <td><%= flowerOne.getImageUrl() %></td>
+                      <td><%= flowerOrderOne.getAmountFlowers() %></td>
                     </tr>
                   <% } %>
               </tbody>
@@ -73,6 +90,8 @@
                  </div>
              <% } %>
         </div>
+
+
 
         <!-- Created -->
         <div class="col-12 mb-5">

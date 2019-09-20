@@ -27,7 +27,7 @@ public class BasketServlet  extends HttpServlet {
     @Autowired
     private UserBusinessServiceImpl userService;
 
-    private Map<Flower, String> ordersInSessions;
+    private Orders ordersInBasket;
 
     private  Set<Orders> ordersByCreated;
 
@@ -62,8 +62,11 @@ public class BasketServlet  extends HttpServlet {
                     // Basket session
                     if (arrayFlowerId != null && arrayAmounts != null) {
 
-                        ordersInSessions = ordersService.createOrdersForSession(arrayFlowerId, arrayAmounts);
-                        req.setAttribute("ordersInSessions", ordersInSessions);
+                        ordersInBasket = ordersService.createOrdersForSession(userData, arrayFlowerId, arrayAmounts);
+                        Set<FlowerOrder> flowerOrdersBasket =  ordersInBasket.getFlowerOrders();
+
+                        req.setAttribute("ordersInBasket", ordersInBasket);
+                        req.setAttribute("flowerOrdersBasket", flowerOrdersBasket);
 
                         session.removeAttribute("arrayFlowerId");
                         session.removeAttribute("arrayAmounts");
@@ -110,10 +113,10 @@ public class BasketServlet  extends HttpServlet {
                 // Created orders
                 if (statusOrders.equals(OrderStatus.CREATED.toString())) {
 
-                    if (ordersInSessions != null && !ordersInSessions.isEmpty()) {
+                    if (ordersInBasket != null) {
                         System.out.println("Create orders. Add orders to bd");
-                        ordersService.createOrders(userData, ordersInSessions);
 
+                        ordersService.createOrders(ordersInBasket);
                         session.removeAttribute("ordersInSessions");
                         session.removeAttribute("ordersByCreated");
                     }

@@ -28,24 +28,47 @@ public class OrdersBusinessServiceImpl implements OrdersBusinessService {
     private CustomerDao customerDao;
 
     @Override
-    public Map<Flower, String> createOrdersForSession(String[] arrayFlowerId, String[] arrayAmounts) {
-        Map<Flower, String> orders = new HashMap<>();
+    public Orders createOrdersForSession(Customer userData, String[] arrayFlowerId, String[] arrayAmounts) {
+
+        Orders orders = new Orders();
+        orders.setCustomer(userData);
+        Set<FlowerOrder> ordersFlowersSet = new HashSet<>();
+
+        double priceOrders = 0.0;
 
         try {
             for (int i = 0; i < arrayFlowerId.length; i++) {
                 if (arrayAmounts[i] != null && !arrayAmounts[i].isEmpty()) {
+
                     Long flowerIdToInt = Long.parseLong(arrayFlowerId[i]);
+                    Long flowerAmount = Long.parseLong(arrayAmounts[i]);
 
-                    if (flowerIdToInt >= 0L) {
-                        Flower flowerById = flowerDao.getOne(flowerIdToInt);
+                    Flower flowerById = flowerDao.getOne(flowerIdToInt);
 
-                        if (flowerById != null) {
-                            orders.put(flowerById, arrayAmounts[i]);
-                        }
+                    if (flowerById != null) {
+
+                        BigDecimal priceFlowerOrder = flowerById.getPrice().multiply(new BigDecimal(flowerAmount));
+                        priceOrders += priceFlowerOrder.longValue();
+
+                        FlowerOrder flowerOrder = new FlowerOrder();
+                        flowerOrder.setOrdersId(orders);
+                        flowerOrder.setFlowerId(flowerById);
+                        flowerOrder.setAmountFlowers(flowerAmount);
+                        flowerOrder.setPrice(priceFlowerOrder);
+
+                        ordersFlowersSet.add(flowerOrder);
                     }
-
                 }
             }
+
+            orders.setFlowerOrders(ordersFlowersSet);
+            orders.setPrice(new BigDecimal(priceOrders).setScale(2, RoundingMode.CEILING));
+
+            // Price with discount
+            double discount = 1 - ((double) userData.getDiscount() / 100);
+            BigDecimal discountPrice = orders.getPrice().multiply(new BigDecimal(discount));
+            orders.setDiscountPrice(discountPrice.setScale(2, RoundingMode.CEILING));
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -54,44 +77,13 @@ public class OrdersBusinessServiceImpl implements OrdersBusinessService {
     }
 
     @Override
-    public Orders createOrders(Customer userData, Map<Flower, String> ordersInSessions) {
+    public Orders createOrders(Orders ordersInBasket) {
 
-        Customer customer = userData;
-        OrderStatus orderStatus = OrderStatus.CREATED;
+        ordersInBasket.setStatus(OrderStatus.CREATED);
+        ordersInBasket.setOrdersDate(new Date());
+        ordersDao.add(ordersInBasket);
 
-        Orders orders = new Orders(customer, orderStatus);
-
-        Set<FlowerOrder> ordersFlowersSet = new HashSet<>();
-
-        double priceOrders = 0.0;
-
-        for (Map.Entry<Flower, String> orderBySession : ordersInSessions.entrySet()) {
-            Flower flower = orderBySession.getKey();
-            Long amountFlower = Long.parseLong(orderBySession.getValue());
-
-            BigDecimal priceFlowerOrder = flower.getPrice().multiply(new BigDecimal(amountFlower));
-
-            priceOrders += priceFlowerOrder.longValue();
-
-            FlowerOrder flowerOrder = new FlowerOrder();
-            flowerOrder.setOrdersId(orders);
-            flowerOrder.setFlowerId(flower);
-            flowerOrder.setAmountFlowers(amountFlower);
-            flowerOrder.setPrice(priceFlowerOrder);
-
-            ordersFlowersSet.add(flowerOrder);
-        }
-
-        orders.setFlowerOrders(ordersFlowersSet);
-        orders.setPrice(new BigDecimal(priceOrders).setScale(2, RoundingMode.CEILING));
-
-        double discount = 1 - ((double) userData.getDiscount() / 100);
-        BigDecimal discountPrice = orders.getPrice().multiply(new BigDecimal(discount));
-        orders.setDiscountPrice(discountPrice.setScale(2, RoundingMode.CEILING));
-
-        ordersDao.add(orders);
-
-        return orders;
+        return ordersInBasket;
     }
 
 

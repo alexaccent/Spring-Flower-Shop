@@ -10,18 +10,18 @@ public interface OrdersBusinessService {
 
     /**
      * Created orders in Session
+     * @param userData the userData from session user
      * @param arrayFlowerId the arrayFlowerId data from the Flower tables
      * @param arrayAmounts the arrayFlowerId data from the Flower tables
-     * @return Map<Flower, String>
+     * @return Orders
      */
-    Map<Flower, String> createOrdersForSession(String[] arrayFlowerId, String[] arrayAmounts);
+    Orders createOrdersForSession(Customer userData, String[] arrayFlowerId, String[] arrayAmounts);
 
     /**
      * Save orders from session to BD with status the CREATED
-     * @param userData the userData from session user
-     * @param ordersInSessions the ordersInSessions is orders from session
+     * @param ordersInBasket the ordersInBasket is orders from session
      * @return Orders
      */
-    Orders createOrders(Customer userData, Map<Flower, String> ordersInSessions);
+    Orders createOrders(Orders ordersInBasket);
 }
 
