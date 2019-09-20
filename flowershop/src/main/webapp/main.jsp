@@ -137,7 +137,7 @@
                       <td><%= flower.getImageUrl() %></td>
                       <% if(userData instanceof Customer) { %>
                           <td>
-                            <input class="input_amount form-control" type="number" name="amount" min="0" max="<%= flower.getAmount() %>" pattern="^[ 0-9]+$" form="orders">
+                            <input class="input_amount form-control" type="number" name="amount" min="1" max="<%= flower.getAmount() %>" pattern="^[ 0-9]+$" form="orders">
                             <input type="hidden" name="flower_id" value='<%= flower.getId() %>' form="orders">
                           </td>
                       <% } %>
