@@ -6,6 +6,7 @@ import com.accenture.flowershop.backend.dao.OrdersDao;
 import com.accenture.flowershop.backend.entity.*;
 import com.accenture.flowershop.backend.services.OrdersBusinessService;
 import com.accenture.flowershop.exception.OrderCloseException;
+import com.accenture.flowershop.exception.OrderCreatedException;
 import com.accenture.flowershop.exception.OrderPaymentException;
 import com.accenture.flowershop.enums.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,13 +78,17 @@ public class OrdersBusinessServiceImpl implements OrdersBusinessService {
     }
 
     @Override
-    public Orders createOrders(Orders ordersInBasket) {
+    public Orders createOrders(Orders ordersInBasket) throws OrderCreatedException {
 
-        ordersInBasket.setStatus(OrderStatus.CREATED);
-        ordersInBasket.setOrdersDate(new Date());
-        ordersDao.add(ordersInBasket);
+        try {
+            ordersInBasket.setStatus(OrderStatus.CREATED);
+            ordersInBasket.setOrdersDate(new Date());
+            ordersDao.add(ordersInBasket);
 
-        return ordersInBasket;
+            return ordersInBasket;
+        } catch (Exception ex) {
+            throw new OrderCreatedException("Ошибка создания заказа");
+        }
     }
 
 

@@ -3,6 +3,7 @@ package com.accenture.flowershop.backend.services;
 import com.accenture.flowershop.backend.entity.Customer;
 import com.accenture.flowershop.backend.entity.Flower;
 import com.accenture.flowershop.backend.entity.Orders;
+import com.accenture.flowershop.exception.OrderCreatedException;
 
 import java.util.Map;
 
@@ -22,6 +23,6 @@ public interface OrdersBusinessService {
      * @param ordersInBasket the ordersInBasket is orders from session
      * @return Orders
      */
-    Orders createOrders(Orders ordersInBasket);
+    Orders createOrders(Orders ordersInBasket) throws OrderCreatedException;
 }
 

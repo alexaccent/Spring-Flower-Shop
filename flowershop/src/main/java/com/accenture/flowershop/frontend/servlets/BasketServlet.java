@@ -2,6 +2,7 @@ package com.accenture.flowershop.frontend.servlets;
 
 import com.accenture.flowershop.backend.entity.*;
 import com.accenture.flowershop.backend.services.Impl.*;
+import com.accenture.flowershop.exception.OrderCreatedException;
 import com.accenture.flowershop.exception.OrderPaymentException;
 import com.accenture.flowershop.enums.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,9 +68,6 @@ public class BasketServlet  extends HttpServlet {
 
                         req.setAttribute("ordersInBasket", ordersInBasket);
                         req.setAttribute("flowerOrdersBasket", flowerOrdersBasket);
-
-                        session.removeAttribute("arrayFlowerId");
-                        session.removeAttribute("arrayAmounts");
                     }
 
                     // Created orders
@@ -116,8 +114,17 @@ public class BasketServlet  extends HttpServlet {
                     if (ordersInBasket != null) {
                         System.out.println("Create orders. Add orders to bd");
 
-                        ordersService.createOrders(ordersInBasket);
-                        session.removeAttribute("ordersInSessions");
+                        try {
+                            ordersService.createOrders(ordersInBasket);
+                        } catch (OrderCreatedException ex) {
+                            req.setAttribute("error", ex.getMessage());
+                        }
+
+                        session.removeAttribute("arrayFlowerId");
+                        session.removeAttribute("arrayAmounts");
+
+                        session.removeAttribute("ordersInBasket");
+
                         session.removeAttribute("ordersByCreated");
                     }
                 }
