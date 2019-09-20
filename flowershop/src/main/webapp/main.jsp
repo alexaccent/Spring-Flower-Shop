@@ -94,9 +94,9 @@
                  <form method="GET" action="/main">
                       <div class="text-center">
                           <label for="amount" class="slider-range-price_label mb-2" >Ценовой диапозон:</label>
-                          <input name="amount_min" type="text" id="amount_min" class="slider-range-price__amount" value="<%= priceMinInSearch %>" readonly>
+                          <input name="price_min" type="text" id="price_min" class="slider-range-price__amount" value="<%= priceMinInSearch %>" readonly>
                           <span> - </span>
-                          <input name="amount_max" type="text" id="amount_max" class="slider-range-price__amount" value="<%= priceMaxInSearch %>" readonly>
+                          <input name="price_max" type="text" id="price_max" class="slider-range-price__amount" value="<%= priceMaxInSearch %>" readonly>
                       </div>
                       <div id="slider-range"></div>
                       <div class="mt-2">

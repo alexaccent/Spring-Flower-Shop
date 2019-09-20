@@ -50,8 +50,8 @@ public class MainServlet extends HttpServlet {
                 req.setAttribute("userData", userData);
 
                 String search = req.getParameter("search");
-                priceMinInSearch = req.getParameter("amount_min");
-                priceMaxInSearch = req.getParameter("amount_max");
+                priceMinInSearch = req.getParameter("price_min");
+                priceMaxInSearch = req.getParameter("price_max");
 
                 // Flowers table
                 if (search != null && !search.isEmpty()) {

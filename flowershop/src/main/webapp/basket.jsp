@@ -95,7 +95,7 @@
 
         <!-- Created -->
         <div class="col-12 mb-5">
-            <p class="text-center text-primary h4 mb-3">Заказы ожидающие оплаты</p>
+            <p class="text-center text-info h4 mb-3">Заказы ожидающие оплаты</p>
 
             <% if(ordersByCreated != null && !ordersByCreated.isEmpty()) { %>
                 <% for (Orders orderOne : ordersByCreated) { %>
@@ -138,7 +138,7 @@
                     </table>
                     <form method="POST" action="/basket" class="text-center">
                         <input type="hidden" name="orders_id" value="<%= orderOne.getId() %>">
-                        <button type="submit" class="btn btn-primary" name="status_orders" value="paid">Оплатить заказ</button>
+                        <button type="submit" class="btn btn-info" name="status_orders" value="paid">Оплатить заказ</button>
                     </form>
                 <% } %>
             <% } else { %>
