@@ -51,7 +51,7 @@
                 <div class="col-12">
                     Стоимость заказа: <span class="text-danger"><%= ordersInBasket.getPrice() %></span> рублей.
                     <% if(ordersInBasket.getPrice().compareTo(ordersInBasket.getDiscountPrice()) != 0) { %>
-                        <p>Стоимость заказа с учетом скидки: <span class="text-danger">
+                        <p>Стоимость заказа с учетом скидки: <span class="text-danger price_discount">
                             <%= ordersInBasket.getDiscountPrice() %></span> рублей.
                         </p>
                     <% } %>

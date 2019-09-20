@@ -86,6 +86,10 @@
     color: #dc3545;
 }
 
+.price_discount {
+    font-weight: bold;
+}
+
 /*
  * Dummy devices (replace them with your own or something else entirely!)
  */
